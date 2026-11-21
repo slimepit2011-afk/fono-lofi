@@ -97,6 +97,34 @@ export const Help: React.FC = () => {
             ))}
           </ul>
         </section>
+
+        {/* Legal & Privacy Compliance */}
+        <section className="card card--padded mb-6" style={{ borderRadius: 'var(--r-lg)' }}>
+          <h2 className="title title--sm mb-2">Legal & Privacy Compliance</h2>
+          <p className="muted-ink text-sm mb-4">
+            FONO lofi respects your privacy and adheres strictly to Google API Services User Data Policies.
+          </p>
+          <div className="flex flex-wrap gap-4 pt-1 text-sm font-semibold">
+            <a
+              href="/privacy"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn--soft py-2 px-4 inline-flex items-center gap-2"
+            >
+              <span>📄 View Privacy Policy</span>
+              <span className="text-2xs opacity-60">↗</span>
+            </a>
+            <a
+              href="/terms"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn--soft py-2 px-4 inline-flex items-center gap-2"
+            >
+              <span>⚖️ View Terms of Service</span>
+              <span className="text-2xs opacity-60">↗</span>
+            </a>
+          </div>
+        </section>
       </div>
     </div>
   );

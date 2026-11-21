@@ -905,6 +905,16 @@ export const Settings: React.FC<SettingsProps> = ({ onOpenAuth, onNavigate }) =>
               >
                 Reset to Defaults
               </button>
+
+              <div className="pt-3 border-t border-line text-center text-xs muted-ink flex items-center justify-center gap-3">
+                <a href="/privacy" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                  Privacy Policy ↗
+                </a>
+                <span>·</span>
+                <a href="/terms" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                  Terms of Service ↗
+                </a>
+              </div>
             </div>
           </section>
         </div>
