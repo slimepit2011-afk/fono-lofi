@@ -49,31 +49,39 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onOpenVideoModal }) => {
   const weekAvgMinutes = Math.round(weekTotalMinutes / 7);
 
   // Real Genre breakdown
-  const genres = getGenreBreakdown(store.history, store.tracks);
+  const genres = getGenreBreakdown(store.history || [], store.tracks || []);
 
   // Real Streak
-  const streakInfo = getStreakInfo(store.history);
+  const streakInfo = getStreakInfo(store.history || []);
 
   const handleShuffleLoved = () => {
-    if (lovedTracks.length === 0) return;
+    if (!lovedTracks || lovedTracks.length === 0) return;
     const ids = lovedTracks.map(t => t.id);
     const randomId = ids[Math.floor(Math.random() * ids.length)];
     storeActions.playTrack(randomId, ids);
   };
 
-  const recentTracks = store.history
+  const recentTracks = (store.history || [])
     .slice(0, 4)
-    .map(h => store.tracks.find(t => t.id === h.k))
+    .map(h => (store.tracks || []).find(t => t.id === h.k))
     .filter(Boolean) as typeof store.tracks;
 
-  const upNextTracks = player.queue
-    .slice(player.queue.indexOf(player.id) + 1, player.queue.indexOf(player.id) + 5)
-    .map(id => store.tracks.find(t => t.id === id))
+  const upNextTracks = (player.queue || [])
+    .slice((player.queue || []).indexOf(player.id) + 1, (player.queue || []).indexOf(player.id) + 5)
+    .map(id => (store.tracks || []).find(t => t.id === id))
     .filter(Boolean) as typeof store.tracks;
 
-  const dailyMix1 = store.playlists.find(p => p.id === 'mix1') || store.playlists[0];
+  const fallbackMix = {
+    id: 'mix1',
+    name: 'Daily Mix',
+    cover: 'pour',
+    tracks: [] as string[]
+  };
+  const dailyMix1 = (store.playlists && store.playlists.length > 0)
+    ? (store.playlists.find(p => p.id === 'mix1') || store.playlists[0])
+    : fallbackMix;
 
-  const firstName = store.profile.name.split(' ')[0] || 'Noor';
+  const firstName = store.profile?.name ? (store.profile.name.split(' ')[0] || 'Listener') : 'Listener';
   const todayDateStr = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
 
   return (
@@ -84,7 +92,7 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onOpenVideoModal }) => {
           <h1>{greeting()}, {firstName}</h1>
         </div>
         <p className="pagehead__sub">
-          {todayDateStr} · {lovedTracks.length} loved songs, {store.playlists.filter(p => p.mine).length} playlists
+          {todayDateStr} · {(lovedTracks || []).length} loved songs, {(store.playlists || []).filter(p => p.mine).length} playlists
         </p>
       </header>
 
@@ -446,23 +454,23 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onOpenVideoModal }) => {
 
           <a
             className="mixcard"
-            href={`#playlist:${dailyMix1.id}`}
+            href={`#playlist:${dailyMix1?.id || 'mix1'}`}
             onClick={(e) => {
               e.preventDefault();
-              onNavigate(`playlist:${dailyMix1.id}`);
+              onNavigate(`playlist:${dailyMix1?.id || 'mix1'}`);
             }}
           >
             <img
               className="mixcard__img"
-              src={`/photos/306-lullo/${dailyMix1.cover}.jpg`}
+              src={`/photos/306-lullo/${dailyMix1?.cover || 'pour'}.jpg`}
               alt=""
               width={480}
               height={480}
               loading="lazy"
             />
             <span className="mixcard__text">
-              <b>{dailyMix1.name}</b>
-              <small>{dailyMix1.tracks.length} songs</small>
+              <b>{dailyMix1?.name || 'Daily mix'}</b>
+              <small>{dailyMix1?.tracks?.length || 0} songs</small>
             </span>
             <button
               type="button"
@@ -470,11 +478,12 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onOpenVideoModal }) => {
               onClick={(e) => {
                 e.stopPropagation();
                 e.preventDefault();
-                if (dailyMix1.tracks.length > 0) {
+                if (dailyMix1?.tracks && dailyMix1.tracks.length > 0) {
                   storeActions.playTrack(dailyMix1.tracks[0], dailyMix1.tracks);
                 }
               }}
               title="Play mix"
+              disabled={!dailyMix1?.tracks || dailyMix1.tracks.length === 0}
             >
               <Icon name="play" size="sm" />
             </button>

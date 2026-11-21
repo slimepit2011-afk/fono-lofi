@@ -57,7 +57,7 @@ export const NineWeeksChart: React.FC<NineWeeksChartProps> = ({ data }) => {
   };
 
   const linePath = generateSmoothPath(points);
-  const areaPath = linePath
+  const areaPath = linePath && points && points.length > 0
     ? `${linePath} L ${points[points.length - 1].x} ${height - paddingY} L ${points[0].x} ${height - paddingY} Z`
     : '';
 

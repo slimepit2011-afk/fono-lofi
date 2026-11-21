@@ -41,7 +41,7 @@ function loadStoredData(): AppData {
           tracks: Array.isArray(parsed.tracks) && parsed.tracks.length > 0 ? parsed.tracks : initial.tracks,
           albums: Array.isArray(parsed.albums) && parsed.albums.length > 0 ? parsed.albums : initial.albums,
           artists: Array.isArray(parsed.artists) && parsed.artists.length > 0 ? parsed.artists : initial.artists,
-          playlists: Array.isArray(parsed.playlists) ? parsed.playlists : initial.playlists,
+          playlists: Array.isArray(parsed.playlists) && parsed.playlists.length > 0 ? parsed.playlists : initial.playlists,
           episodes: Array.isArray(parsed.episodes) ? parsed.episodes : initial.episodes,
           shows: Array.isArray(parsed.shows) ? parsed.shows : initial.shows,
           paymentMethods: Array.isArray(parsed.paymentMethods) && parsed.paymentMethods.length > 0 ? parsed.paymentMethods : initial.paymentMethods,
@@ -837,9 +837,19 @@ export const storeActions = {
       }
     }
 
-    // User directive: Delete all songs when user registers so each has unique uploaded songs
+    // User directive: Delete all default songs when user registers so each has unique uploaded songs
     currentData.tracks = [];
-    currentData.playlists = [];
+    currentData.playlists = [
+      {
+        id: 'mix1',
+        name: 'My Upload Vault',
+        desc: 'Personal music vault for your uploaded tracks and audio files',
+        cover: 'pour',
+        mine: true,
+        made: Date.now(),
+        tracks: []
+      }
+    ];
     currentData.albums = [];
     currentData.artists = [];
     currentData.history = [];
