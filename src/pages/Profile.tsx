@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useStore, storeActions } from '../store';
 import { Icon } from '../ui/icons';
+import { GuestAvatar } from '../components/GuestAvatar';
 import { tactile } from '../services/tactileFeedback';
 import { formatDuration } from '../ui/format';
 import { AudioUploader } from '../components/AudioUploader';
@@ -12,12 +13,12 @@ export interface ProfileProps {
 }
 
 const AVATAR_PRESETS = [
-  { id: 'cat', label: '🐱 Lofi Cat', url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=160&h=160&fit=crop&crop=face' },
+  { id: 'vinyl', label: '📻 Vintage Vinyl', url: 'https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=160&h=160&fit=crop' },
   { id: 'coffee', label: '☕ Warm Latte', url: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=160&h=160&fit=crop' },
-  { id: 'vinyl', label: '📻 Vintage Vinyl', url: 'https://images.unsplash.com/photo-1539185441755-769473a23570?w=160&h=160&fit=crop' },
+  { id: 'producer', label: '🎧 Studio Deck', url: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=160&h=160&fit=crop' },
   { id: 'sunset', label: '🌅 Tokyo Sunset', url: 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=160&h=160&fit=crop' },
-  { id: 'producer', label: '🎧 Studio Deck', url: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=160&h=160&fit=crop' },
   { id: 'matcha', label: '🍵 Matcha Zen', url: 'https://images.unsplash.com/photo-1536256263959-770b48d82b0a?w=160&h=160&fit=crop' },
+  { id: 'cat', label: '🐱 Studio Cat', url: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=160&h=160&fit=crop&crop=face' },
   { id: 'sakura', label: '🌸 Sakura Chill', url: 'https://images.unsplash.com/photo-1522383225653-ed111181a951?w=160&h=160&fit=crop' },
   { id: 'midnight', label: '🌙 Midnight Walk', url: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=160&h=160&fit=crop' }
 ];
@@ -134,16 +135,20 @@ export const Profile: React.FC<ProfileProps> = ({ onNavigate, onOpenAuth }) => {
 
       {/* 1. HERO SECTION */}
       <section className="profile-hero">
-        <div className="profile-hero__backdrop" />
-
         <div className="profile-hero__content">
           <div className="profile-hero__identity">
             <div className="profile-hero__avatar-wrap">
-              <img
-                src={currentAvatar}
-                alt={profile.name}
-                className="profile-hero__avatar"
-              />
+              {profile.avatar || isRegistered ? (
+                <img
+                  src={currentAvatar}
+                  alt={profile.name}
+                  className="profile-hero__avatar"
+                />
+              ) : (
+                <div className="profile-hero__avatar" style={{ padding: 0, overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <GuestAvatar size={76} />
+                </div>
+              )}
               <span
                 className={`profile-hero__status-dot ${
                   isRegistered ? 'profile-hero__status-dot--verified' : 'profile-hero__status-dot--guest'
@@ -184,7 +189,14 @@ export const Profile: React.FC<ProfileProps> = ({ onNavigate, onOpenAuth }) => {
               <>
                 <button
                   type="button"
-                  className="btn btn--primary btn--sm font-bold flex items-center gap-1.5 shadow-sm"
+                  className="btn btn--primary btn--sm font-bold flex items-center gap-2 shadow-sm"
+                  style={{
+                    backgroundColor: 'var(--coral, #f09064)',
+                    color: '#ffffff',
+                    padding: '8px 16px',
+                    borderRadius: '12px',
+                    fontSize: '13px'
+                  }}
                   onClick={() => {
                     tactile.click('click');
                     onOpenAuth?.('signin');
@@ -195,7 +207,12 @@ export const Profile: React.FC<ProfileProps> = ({ onNavigate, onOpenAuth }) => {
                 </button>
                 <button
                   type="button"
-                  className="btn btn--soft btn--sm font-medium"
+                  className="btn btn--soft btn--sm font-semibold"
+                  style={{
+                    padding: '8px 16px',
+                    borderRadius: '12px',
+                    fontSize: '13px'
+                  }}
                   onClick={() => {
                     tactile.click('click');
                     onOpenAuth?.('register');
