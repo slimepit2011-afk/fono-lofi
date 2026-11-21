@@ -24,8 +24,8 @@ declare global {
 const STORAGE_KEY_CLIENT_ID = 'fono:google_client_id';
 const LEGACY_STORAGE_KEY_CLIENT_ID = 'lullo:google_client_id';
 
-// Default development demo client ID (Google Cloud Console OAuth 2.0 Web Client)
-const DEFAULT_CLIENT_ID = '982736410293-lofimorphicwebdemo01.apps.googleusercontent.com';
+// Real Official Google Cloud OAuth 2.0 Client ID for FONO lofi
+const DEFAULT_CLIENT_ID = '79960096223-7bi6j6glct7hl7pc9urvtls6tu6tm835.apps.googleusercontent.com';
 
 class GoogleAuthService {
   private isScriptLoaded = false;
