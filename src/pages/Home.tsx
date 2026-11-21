@@ -2,6 +2,7 @@ import React from 'react';
 import { useStore, storeActions } from '../store';
 import { Vinyl } from '../components/Vinyl';
 import { CircularGoal, WeekBars } from '../components/Charts';
+import { FonoLogo } from '../components/FonoLogo';
 import { Icon } from '../ui/icons';
 import { formatMinutes, formatDuration, greeting } from '../ui/format';
 import { tactile } from '../services/tactileFeedback';
@@ -95,6 +96,57 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onOpenVideoModal }) => {
           {todayDateStr} · {(lovedTracks || []).length} loved songs, {(store.playlists || []).filter(p => p.mine).length} playlists
         </p>
       </header>
+
+      {/* Google OAuth Compliance & Public Purpose Showcase (Required for Google Verification) */}
+      <section
+        className="card mb-6"
+        style={{
+          background: 'linear-gradient(135deg, var(--card) 0%, rgba(240, 144, 100, 0.08) 100%)',
+          borderRadius: 'var(--r-lg)',
+          border: '1.5px solid var(--line)',
+          padding: '20px 24px',
+          boxShadow: 'var(--shadow-sm)'
+        }}
+        aria-label="About FONO lofi application and purpose"
+      >
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
+          <div className="flex items-center gap-2.5">
+            <span className="mark" style={{ width: 28, height: 28, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+              <FonoLogo size={26} />
+            </span>
+            <h2 className="title title--sm m-0" style={{ letterSpacing: '-0.02em', fontSize: '20px', fontWeight: 800 }}>
+              FONO lofi
+            </h2>
+            <span className="badge badge--pill bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5">
+              ✓ Open Access · No Login Required
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3 text-xs muted-ink font-semibold">
+            <a href="/privacy" target="_blank" rel="noopener noreferrer" className="hover:underline text-accent">
+              Privacy Policy ↗
+            </a>
+            <span>·</span>
+            <a href="/terms" target="_blank" rel="noopener noreferrer" className="hover:underline text-accent">
+              Terms of Service ↗
+            </a>
+          </div>
+        </div>
+
+        <p className="text-xs m-0 mb-3" style={{ lineHeight: 1.6, color: 'var(--ink)' }}>
+          <strong>Application Purpose:</strong> FONO lofi is a free ambient focus and study music player that helps students, writers, and developers concentrate, relax, and achieve deep focus. Listen immediately to curated lo-fi instrumental beats, study timers, and analog soundscapes with <strong>zero registration required</strong>.
+        </p>
+
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-line text-2xs muted-ink">
+          <div className="flex flex-wrap items-center gap-3">
+            <span>🎵 <strong>Free Streaming:</strong> All tracks & timers available instantly without an account</span>
+            <span>🔒 <strong>Optional Google Sign-In:</strong> Only needed if you wish to sync custom playlist vaults</span>
+          </div>
+          <span style={{ opacity: 0.9, fontWeight: 600 }}>
+            🛡️ Google API Terms Compliant · No AI NCII
+          </span>
+        </div>
+      </section>
 
       {/* home__top: Stage Card (left 1.65fr) + 4 KPI Tiles (right 1fr) */}
       <div className="home__top">
@@ -526,6 +578,21 @@ export const Home: React.FC<HomeProps> = ({ onNavigate, onOpenVideoModal }) => {
           <Icon name="arrowR" size="xs" />
         </button>
       </section>
+
+      {/* Public Footer for Google Verification & Trust */}
+      <footer className="mt-8 pt-6 pb-12 border-t border-line text-xs muted-ink flex flex-wrap justify-between items-center gap-4">
+        <div className="flex items-center gap-2 font-bold text-ink">
+          <span>🎧 FONO lofi</span>
+          <span className="font-normal muted-ink">— Ambient Focus & Study Companion</span>
+        </div>
+        <div className="flex items-center gap-4">
+          <a href="/privacy" target="_blank" rel="noopener noreferrer" className="hover:underline">Privacy Policy</a>
+          <span>·</span>
+          <a href="/terms" target="_blank" rel="noopener noreferrer" className="hover:underline">Terms of Service</a>
+          <span>·</span>
+          <a href="mailto:support@fono-lofi.vercel.app" className="hover:underline">support@fono-lofi.vercel.app</a>
+        </div>
+      </footer>
     </div>
   );
 };

@@ -31,24 +31,24 @@
       background-color: var(--bg);
       color: var(--ink);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Urbanist", Helvetica, Arial, sans-serif;
-      line-height: 1.65;
-      padding: 32px 20px;
+      line-height: 1.7;
+      padding: 36px 20px;
       display: flex;
       justify-content: center;
     }
     .container {
-      max-width: 760px;
+      max-width: 820px;
       width: 100%;
       background: var(--card);
       border-radius: var(--radius);
-      padding: 40px 36px;
+      padding: 44px 40px;
       border: 1px solid var(--line);
-      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
     }
     header {
       border-bottom: 1px solid var(--line);
       padding-bottom: 24px;
-      margin-bottom: 28px;
+      margin-bottom: 32px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -62,12 +62,13 @@
       text-decoration: none;
       color: var(--ink);
       font-weight: 800;
-      font-size: 20px;
+      font-size: 22px;
+      letter-spacing: -0.01em;
     }
     .back-btn {
       display: inline-flex;
       align-items: center;
-      padding: 8px 16px;
+      padding: 9px 18px;
       border-radius: 999px;
       background: var(--accent);
       color: var(--accent-ink);
@@ -77,15 +78,23 @@
       transition: opacity 0.2s;
     }
     .back-btn:hover { opacity: 0.9; }
-    h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.02em; }
-    .updated { font-size: 13px; color: var(--muted); margin-bottom: 24px; }
-    h2 { font-size: 18px; font-weight: 700; margin: 28px 0 12px; color: var(--ink); border-left: 3px solid var(--accent); padding-left: 10px; }
-    p, ul { margin-bottom: 16px; font-size: 15px; color: var(--ink); }
-    ul { padding-left: 20px; }
-    li { margin-bottom: 6px; }
+    h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.02em; }
+    .updated { font-size: 13px; color: var(--muted); margin-bottom: 24px; font-weight: 600; }
+    h2 { font-size: 19px; font-weight: 700; margin: 32px 0 14px; color: var(--ink); border-left: 3.5px solid var(--accent); padding-left: 12px; }
+    p, ul, ol { margin-bottom: 16px; font-size: 15px; color: var(--ink); }
+    ul, ol { padding-left: 24px; }
+    li { margin-bottom: 8px; }
+    .highlight-box {
+      background: rgba(240, 144, 100, 0.09);
+      border: 1.5px solid rgba(240, 144, 100, 0.35);
+      border-radius: 14px;
+      padding: 20px 22px;
+      margin: 24px 0;
+      font-size: 14px;
+    }
     footer {
-      margin-top: 36px;
-      padding-top: 20px;
+      margin-top: 44px;
+      padding-top: 24px;
       border-top: 1px solid var(--line);
       font-size: 13px;
       color: var(--muted);
@@ -94,91 +103,90 @@
       flex-wrap: wrap;
       gap: 12px;
     }
-    a { color: var(--accent); text-decoration: none; }
+    a { color: var(--accent); text-decoration: none; font-weight: 600; }
     a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <a href="/" class="brand">
+      <a href="https://fono-lofi.vercel.app/" class="brand">
         <span>🎧 FONO lofi</span>
       </a>
-      <a href="/" class="back-btn">← Back to FONO Room</a>
+      <a href="https://fono-lofi.vercel.app/" class="back-btn">← Back to FONO lofi Home</a>
     </header>
 
     <main>
-      <h1>Terms of Service</h1>
-      <p class="updated">Effective Date: November 21, 2026 · Application: <strong>fono lofi</strong> (https://fono-lofi.vercel.app)</p>
+      <h1>Terms of Service for FONO lofi</h1>
+      <p class="updated">Effective Date: November 21, 2026 · Application Name: <strong>FONO lofi</strong> · Homepage URL: <a href="https://fono-lofi.vercel.app/">https://fono-lofi.vercel.app/</a></p>
 
       <p>
-        Welcome to <strong>FONO lofi</strong>. These Terms of Service ("Terms") govern your use of the FONO lofi website, application, and music streaming player located at <a href="https://fono-lofi.vercel.app">https://fono-lofi.vercel.app</a>. By accessing or using our service, you agree to be bound by these Terms.
+        These Terms of Service ("Terms") govern your access to and use of <strong>FONO lofi</strong>, available at <a href="https://fono-lofi.vercel.app/">https://fono-lofi.vercel.app/</a>. By accessing or using our application, you agree to comply with and be bound by these Terms.
       </p>
 
-      <h2>1. Description of Service</h2>
+      <h2>1. Purpose and Description of FONO lofi</h2>
       <p>
-        FONO lofi provides a cozy, ambient audio listening room featuring curated lo-fi beats, productivity soundscapes, custom playlist organization, focus statistics, and personal audio vault uploads.
-      </p>
-
-      <h2>2. User Accounts & Social Authentication</h2>
-      <p>
-        You may use FONO lofi as a guest or create an authenticated account using Google OAuth or Apple ID. When creating an account:
+        <strong>FONO lofi</strong> is a free, web-based ambient music and study companion designed to enhance focus, relaxation, and deep work. Core features include:
       </p>
       <ul>
-        <li>You agree to provide accurate identification information provided through your chosen provider.</li>
-        <li>You are responsible for maintaining the security of your device and login session.</li>
-        <li>You may disconnect or delete your account at any time through the in-app Settings.</li>
+        <li>Curated instrumental lo-fi hip hop, acoustic, and ambient music streams.</li>
+        <li>Focus timers, Pomodoro sessions, and personal listening statistics.</li>
+        <li>A private music vault enabling users to upload their own audio files for personal playback.</li>
+        <li><strong>Open & Ungated Access:</strong> FONO lofi is publicly accessible without creating an account or logging in. Logging in with Google or Apple ID is completely optional and intended solely to save personalized playlists and custom library vaults.</li>
       </ul>
 
-      <h2>3. User Uploads and Intellectual Property</h2>
+      <h2>2. Compliance with Google APIs Terms of Service</h2>
       <p>
-        FONO lofi allows listeners to upload their own audio files to their private vault.
+        FONO lofi strictly complies with the <a href="https://developers.google.com/terms" target="_blank" rel="noopener noreferrer">Google APIs Terms of Service</a> and the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer">Google API Services User Data Policy</a>:
       </p>
       <ul>
-        <li><strong>Ownership:</strong> You retain 100% full ownership of any music or audio files you upload to FONO lofi. We do not claim any intellectual property rights over your personal content.</li>
-        <li><strong>Responsibility:</strong> You represent and warrant that you own or have the necessary rights to use any audio files you upload, and that such content does not violate any third-party copyright or trademark rights.</li>
+        <li><strong>Authorized Use Only:</strong> We use Google APIs solely to authenticate consenting users and establish their personalized music room session.</li>
+        <li><strong>No Misuse:</strong> We do not intercept, scrape, or repurpose Google API credentials or tokens for any unauthorized activities.</li>
       </ul>
 
-      <h2>4. Third-Party Integrations</h2>
+      <div class="highlight-box">
+        <strong>Strict Prohibition on AI-Generated Non-Consensual Intimate Imagery (NCII):</strong><br>
+        In accordance with Google APIs Terms of Service and applicable laws, FONO lofi strictly prohibits and does <strong>not</strong> engage in the generation, synthesis, distribution, or facilitation of Non-Consensual Intimate Imagery (NCII), deepfake adult content, or any sexually explicit imagery. FONO lofi does not provide generative image tools or facial synthesis technology.
+      </div>
+
+      <h2>3. User Content & Intellectual Property</h2>
+      <ul>
+        <li><strong>User Ownership:</strong> You retain 100% full copyright and ownership of any audio tracks or playlists you upload to your private vault in FONO lofi. We claim no ownership over your files.</li>
+        <li><strong>Lawful Content:</strong> You agree not to upload audio files that infringe on third-party intellectual property rights, contain malware, or violate applicable laws.</li>
+      </ul>
+
+      <h2>4. Third-Party Services</h2>
       <p>
-        FONO lofi may integrate with third-party platforms such as Google, Apple, YouTube, and Spotify to enhance playback and playlist discovery. Your use of these third-party features is subject to the respective terms and privacy policies of those services:
+        FONO lofi may provide links or interfaces with third-party platforms (Google Identity Services, Apple, YouTube audio streams, Spotify metadata). Your interaction with third-party providers is governed by their respective terms of service:
       </p>
       <ul>
         <li><a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">Google Terms of Service</a></li>
-        <li><a href="https://www.apple.com/legal/internet-services/itunes/dev/minterms/" target="_blank" rel="noopener noreferrer">Apple Media Services Terms</a></li>
         <li><a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener noreferrer">YouTube Terms of Service</a></li>
+        <li><a href="https://www.apple.com/legal/internet-services/itunes/dev/minterms/" target="_blank" rel="noopener noreferrer">Apple Media Services Terms</a></li>
       </ul>
 
-      <h2>5. Acceptable Use</h2>
-      <p>You agree not to:</p>
-      <ul>
-        <li>Attempt to reverse-engineer, disrupt, or compromise the stability of the application.</li>
-        <li>Upload malware, abusive scripts, or corrupted files designed to harm other listeners.</li>
-        <li>Use automated bots or scrapers without express written permission.</li>
-      </ul>
-
-      <h2>6. Disclaimer of Warranties</h2>
+      <h2>5. Service Availability & Modifications</h2>
       <p>
-        FONO lofi is provided on an "AS IS" and "AS AVAILABLE" basis without warranties of any kind, whether express or implied. While we strive for uninterrupted audio and seamless productivity, we cannot guarantee that the service will always be error-free or uninterrupted.
+        We continuously improve FONO lofi. We may update, improve, or temporarily pause features for maintenance without prior notice. We provide FONO lofi on an "AS IS" and "AS AVAILABLE" basis.
       </p>
 
-      <h2>7. Limitation of Liability</h2>
+      <h2>6. Termination and Account Deletion</h2>
       <p>
-        To the fullest extent permitted by applicable law, FONO lofi and its developers shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your access to or use of the service.
+        You can stop using FONO lofi at any time. You can clear your session and delete all local data by clicking <strong>Reset to Defaults</strong> in the <a href="https://fono-lofi.vercel.app/#settings">Settings</a> menu.
       </p>
 
-      <h2>8. Changes to Terms</h2>
+      <h2>7. Disclaimer of Warranties & Limitation of Liability</h2>
       <p>
-        We reserve the right to modify these Terms at any time. When modifications are made, we will update the "Effective Date" at the top of this document.
+        To the maximum extent permitted by law, FONO lofi and its maintainers disclaim all warranties, express or implied, including warranties of merchantability and fitness for a particular purpose. We shall not be liable for any indirect, incidental, or consequential damages arising from the use of our service.
       </p>
 
-      <h2>9. Contact Information</h2>
+      <h2>8. Contact Information</h2>
       <p>
         For inquiries regarding these Terms of Service, please contact:
       </p>
       <p>
         <strong>FONO lofi Support</strong><br>
-        Website: <a href="https://fono-lofi.vercel.app">https://fono-lofi.vercel.app</a><br>
+        Website: <a href="https://fono-lofi.vercel.app/">https://fono-lofi.vercel.app/</a><br>
         Email: <a href="mailto:support@fono-lofi.vercel.app">support@fono-lofi.vercel.app</a>
       </p>
     </main>
@@ -186,8 +194,9 @@
     <footer>
       <span>© 2026 FONO lofi. All rights reserved.</span>
       <div>
-        <a href="/privacy.html">Privacy Policy</a> · 
-        <a href="/terms.html">Terms of Service</a>
+        <a href="https://fono-lofi.vercel.app/privacy">Privacy Policy</a> · 
+        <a href="https://fono-lofi.vercel.app/terms">Terms of Service</a> ·
+        <a href="https://fono-lofi.vercel.app/">Home</a>
       </div>
     </footer>
   </div>
