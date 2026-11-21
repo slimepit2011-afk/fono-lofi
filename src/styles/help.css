@@ -1,0 +1,2 @@
+/*! Lullo — your listening room — © 2026 Hasib (OVERSHOOT). All rights reserved. Licensed, not sold: see LICENSE.md. */
+.contact{flex-direction:column;gap:14px;display:flex}.tickets{flex-direction:column;margin:0;padding:0;list-style:none;display:flex}.tickets li{border-bottom:1px solid var(--line);align-items:center;gap:12px;padding:10px 0;display:flex}.tickets li:last-child{border-bottom:0}.tickets .cell__text{flex:1}

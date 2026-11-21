@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>FONO lofi — Analog Lo-Fi Listening Room</title>
+  <meta name="description" content="FONO lofi is your cosy analog listening room: a spinning vinyl record, precision acoustic audio, curated mood radio, ambient soundscapes, and personal listening vaults." />
+  <meta name="theme-color" content="#fcecdc" />
+  
+  <!-- FONO Bespoke Icons -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="alternate icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/favicon.svg" />
+
+  <link rel="preload" href="/fonts/urbanist/urbanist-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  <script>
+    (function (d) {
+      d.classList.add('js');
+      var rec = /[?&]record\b/.test(location.search);
+      if (rec) d.classList.add('is-record');
+      var th = location.search.match(/[?&]theme=(dark|light)\b/);
+      if (rec && th) d.dataset.theme = th[1];
+      var w = innerWidth, rail = false;
+      try {
+        if (!rec) {
+          var t = JSON.parse(localStorage.getItem('fono:theme') || localStorage.getItem('lullo:theme') || '"light"');
+          d.dataset.theme = t === 'system' ? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : t;
+          rail = (localStorage.getItem('fono:rail') || localStorage.getItem('lullo:rail')) === '1';
+        }
+      } catch (e) {}
+      if (rec && /[?&]rail\b/.test(location.search)) rail = true;
+      if (w > 760 && (rail || w < 1280)) d.classList.add('is-rail');
+      if (d.dataset.theme === 'dark') {
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', '#1a1511');
+      }
+    })(document.documentElement);
+  </script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div id="lullo-yt-iframe" style="position:fixed;bottom:10px;right:10px;width:320px;height:180px;opacity:0.001;pointer-events:none;z-index:-9999;"></div>
+  
+  <div id="root">
+    <!-- Immediate cozy pre-mount skeleton (prevents blank screen) -->
+    <div id="fono-preloader" style="position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background-color:#fcecdc;font-family:'Urbanist',system-ui,sans-serif;z-index:99999;transition:opacity 0.3s ease;">
+      <style>
+        @keyframes fonoSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes fonoPulse { 0%, 100% { transform: scale(1); opacity: 0.95; } 50% { transform: scale(1.04); opacity: 1; } }
+        .fono-vinyl-loader { width: 72px; height: 72px; animation: fonoSpin 4s linear infinite; }
+      </style>
+      <div style="animation: fonoPulse 2.4s ease-in-out infinite; display:flex; flex-direction:column; align-items:center;">
+        <svg class="fono-vinyl-loader" viewBox="0 0 64 64" fill="none">
+          <rect width="64" height="64" rx="18" fill="#1f1612" />
+          <circle cx="32" cy="32" r="23" stroke="rgba(255,255,255,0.08)" stroke-width="1.2" fill="none" />
+          <circle cx="32" cy="32" r="10" fill="#f06436" />
+          <path d="M22 15 C22 13.3 23.3 12 25 12 C26.7 12 28 13.3 28 15 V45 C28 46.7 26.7 48 25 48 C23.3 48 22 46.7 22 45 V15 Z" fill="#fffcf7" />
+          <path d="M25 12 H40 C42.2 12 44 13.8 44 16 C44 18.2 42.2 20 40 20 H25 V12 Z" fill="#fffcf7" />
+          <path d="M25 25 H36 C38 25 39.5 26.5 39.5 28.5 C39.5 30.5 38 32 36 32 H25 V25 Z" fill="#fffcf7" />
+          <circle cx="32" cy="32" r="2.8" fill="#140d09" />
+          <circle cx="41.5" cy="16" r="2.5" fill="#fed085" />
+        </svg>
+        <div style="margin-top: 18px; font-weight: 800; font-size: 20px; letter-spacing: 0.04em; color: #3d2b1f; display:flex; align-items:center; gap: 6px;">
+          <span>FONO</span>
+          <span style="font-size: 11px; font-weight: 700; background: #e8613c; color: #fff; padding: 2px 7px; border-radius: 999px; letter-spacing: 0.08em; text-transform: uppercase;">lofi</span>
+        </div>
+        <p style="margin-top: 6px; font-size: 13px; color: #8c7667; font-weight: 500;">Dropping the needle on the groove...</p>
+      </div>
+
+      <!-- Self-healing fail-safe button if React takes > 3.5 seconds -->
+      <div id="fono-failsafe" style="display:none; margin-top: 24px; text-align: center;">
+        <button onclick="localStorage.removeItem('lullo:data'); localStorage.removeItem('fono:data'); window.location.reload();" 
+          style="background: #3d2b1f; color: #fdf5ec; border: none; padding: 10px 18px; border-radius: 999px; font-size: 13px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(61,43,31,0.15);">
+          Refresh FONO Listening Room
+        </button>
+      </div>
+      <script>
+        setTimeout(function() {
+          var el = document.getElementById('fono-failsafe');
+          if (el) el.style.display = 'block';
+        }, 3500);
+      </script>
+    </div>
+  </div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+</html>
