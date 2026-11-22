@@ -123,7 +123,7 @@ class RedeemCodeService {
       success: false,
       code,
       title: 'Invalid Code',
-      message: `Code "${code}" was not recognized. Try "VIPMAX", "LOFI2026", "STUDIO", or "NEONDUSK".`,
+      message: `Code "${code}" was not recognized. Please check your voucher code and try again.`,
       perksUnlocked: []
     };
   }

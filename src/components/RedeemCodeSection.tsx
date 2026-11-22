@@ -42,7 +42,7 @@ export const RedeemCodeSection: React.FC<{ className?: string }> = ({ className 
         <input
           type="text"
           className="input flex-1 uppercase tracking-wider font-mono font-bold"
-          placeholder="ENTER CODE (e.g. VIPMAX, LOFI2026, STUDIO)"
+          placeholder="ENTER PROMO OR VOUCHER CODE"
           value={code}
           onChange={(e) => setCode(e.target.value.toUpperCase())}
           style={{ letterSpacing: '0.08em' }}
@@ -55,24 +55,6 @@ export const RedeemCodeSection: React.FC<{ className?: string }> = ({ className 
           Redeem
         </button>
       </form>
-
-      {/* Sample Quick Codes for convenience */}
-      <div className="flex flex-wrap items-center gap-2 mb-3">
-        <span className="text-2xs muted-ink font-semibold">Available Codes:</span>
-        {['VIPMAX', 'LOFI2026', 'STUDIO', 'NEONDUSK', 'COZYRAIN'].map(sampleCode => (
-          <button
-            key={sampleCode}
-            type="button"
-            className="btn btn--2xs btn--soft font-mono"
-            onClick={() => {
-              tactile.click('tap');
-              setCode(sampleCode);
-            }}
-          >
-            {sampleCode}
-          </button>
-        ))}
-      </div>
 
       {/* Result feedback */}
       {result && (
