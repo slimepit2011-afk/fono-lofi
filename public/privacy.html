@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Privacy Policy · 隱私權政策 — FONO lofi</title>
+  <meta name="description" content="Official Privacy Policy and Data Protection Notice for FONO lofi. Comprehensive details on Google API data usage, Limited Use compliance, user data rights, and security." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -12,9 +13,10 @@
       --bg: #fcecdc;
       --card: #fdf5ec;
       --ink: #3d2b1f;
-      --muted: #75604f;
+      --muted: #6b5646;
       --line: rgba(61, 43, 31, 0.12);
       --accent: #e8613c;
+      --accent-soft: rgba(232, 97, 60, 0.08);
       --accent-ink: #ffffff;
       --radius: 20px;
     }
@@ -23,9 +25,10 @@
         --bg: #141210;
         --card: #1f1c19;
         --ink: #fdf5ec;
-        --muted: #a39284;
-        --line: rgba(253, 245, 236, 0.1);
+        --muted: #b09e90;
+        --line: rgba(253, 245, 236, 0.12);
         --accent: #f09064;
+        --accent-soft: rgba(240, 144, 100, 0.12);
       }
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,23 +36,23 @@
       background-color: var(--bg);
       color: var(--ink);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Urbanist", Helvetica, Arial, sans-serif;
-      line-height: 1.7;
-      padding: 36px 20px;
+      line-height: 1.75;
+      padding: 40px 20px;
       display: flex;
       justify-content: center;
     }
     .container {
-      max-width: 860px;
+      max-width: 900px;
       width: 100%;
       background: var(--card);
       border-radius: var(--radius);
-      padding: 44px 40px;
+      padding: 48px 44px;
       border: 1px solid var(--line);
       box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
     }
     header {
       border-bottom: 1px solid var(--line);
-      padding-bottom: 24px;
+      padding-bottom: 28px;
       margin-bottom: 32px;
       display: flex;
       justify-content: space-between;
@@ -64,57 +67,124 @@
       text-decoration: none;
       color: var(--ink);
       font-weight: 800;
-      font-size: 22px;
+      font-size: 24px;
     }
     .back-btn {
       display: inline-flex;
       align-items: center;
-      padding: 9px 18px;
+      padding: 10px 20px;
       border-radius: 999px;
       background: var(--accent);
       color: var(--accent-ink);
       text-decoration: none;
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 700;
       transition: opacity 0.2s;
     }
     .back-btn:hover { opacity: 0.9; }
-    h1 { font-size: 30px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.02em; }
-    .updated { font-size: 13.5px; color: var(--muted); margin-bottom: 24px; font-weight: 600; }
-    h2 { font-size: 19px; font-weight: 700; margin: 36px 0 14px; color: var(--ink); border-left: 4px solid var(--accent); padding-left: 12px; }
-    h3 { font-size: 15.5px; font-weight: 700; margin: 20px 0 8px; color: var(--ink); }
-    p, ul, ol { margin-bottom: 16px; font-size: 14.5px; color: var(--ink); }
-    ul, ol { padding-left: 24px; }
-    li { margin-bottom: 8px; }
-    .highlight-box {
-      background: rgba(232, 97, 60, 0.08);
-      border: 1.5px solid rgba(232, 97, 60, 0.35);
-      border-radius: 14px;
-      padding: 20px 22px;
-      margin: 24px 0;
-      font-size: 14px;
+    h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.02em; }
+    .meta-bar {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      font-weight: 600;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      padding: 12px 16px;
+      background: rgba(0, 0, 0, 0.03);
+      border-radius: 10px;
+      border: 1px solid var(--line);
     }
     .badge-pill {
       display: inline-block;
       background: #e8f5e9;
       color: #2e7d32;
       border: 1px solid #c8e6c9;
-      padding: 4px 12px;
+      padding: 4px 14px;
       border-radius: 999px;
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 700;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    .toc-box {
+      background: var(--accent-soft);
+      border: 1.5px solid rgba(232, 97, 60, 0.25);
+      border-radius: 14px;
+      padding: 22px 26px;
+      margin: 24px 0 36px;
+      font-size: 13.5px;
+    }
+    .toc-box h3 {
+      margin: 0 0 12px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 8px 16px;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    .toc-grid li a {
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 600;
+      display: block;
+      padding: 2px 0;
+    }
+    .toc-grid li a:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+    h2 {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 40px 0 16px;
+      color: var(--ink);
+      border-left: 4.5px solid var(--accent);
+      padding-left: 14px;
+      scroll-margin-top: 24px;
+    }
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 22px 0 10px;
+      color: var(--ink);
+    }
+    p, ul, ol { margin-bottom: 16px; font-size: 14.5px; color: var(--ink); }
+    ul, ol { padding-left: 24px; }
+    li { margin-bottom: 8px; }
+    .highlight-box {
+      background: var(--accent-soft);
+      border: 1.5px solid rgba(232, 97, 60, 0.35);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin: 24px 0;
+      font-size: 14px;
+    }
+    .sub-box {
+      background: rgba(0, 0, 0, 0.025);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 14px;
     }
     .scope-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 20px 0;
-      font-size: 13px;
+      margin: 22px 0;
+      font-size: 13.5px;
     }
     .scope-table th, .scope-table td {
       border: 1px solid var(--line);
       padding: 12px 14px;
       text-align: left;
+      vertical-align: top;
     }
     .scope-table th {
       background: rgba(0, 0, 0, 0.04);
@@ -128,8 +198,8 @@
       font-size: 12.5px;
     }
     footer {
-      margin-top: 44px;
-      padding-top: 24px;
+      margin-top: 50px;
+      padding-top: 28px;
       border-top: 1px solid var(--line);
       font-size: 13px;
       color: var(--muted);
@@ -146,7 +216,7 @@
   <div class="container">
     <header>
       <a href="https://fono-lofi.vercel.app/" class="brand">
-        <img src="/fono-logo-badge.png" alt="FONO lofi" style="width: 40px; height: 40px; border-radius: 10px; vertical-align: middle;" />
+        <img src="/fono-logo-badge.png" alt="FONO lofi" style="width: 42px; height: 42px; border-radius: 10px; vertical-align: middle;" />
         <span>FONO lofi</span>
       </a>
       <a href="https://fono-lofi.vercel.app/" class="back-btn">← Back to FONO lofi Home</a>
@@ -154,117 +224,224 @@
 
     <main>
       <h1>Privacy Policy · 隱私權政策</h1>
-      <p class="updated">
-        Effective Date: November 22, 2026 · Application Name: <strong>FONO lofi</strong> · Official Homepage: <a href="https://fono-lofi.vercel.app/">https://fono-lofi.vercel.app/</a>
-      </p>
+      
+      <div class="meta-bar">
+        <span>📅 <strong>Effective Date:</strong> November 22, 2026</span>
+        <span>🏷️ <strong>Application Name:</strong> FONO lofi</span>
+        <span>🌐 <strong>Official Domain:</strong> <a href="https://fono-lofi.vercel.app/">https://fono-lofi.vercel.app/</a></span>
+        <span>✉️ <strong>Data Controller Email:</strong> support@fono-lofi.vercel.app</span>
+      </div>
 
       <div class="badge-pill">
-        ✓ Open Access · No Login Required (完全公開 · 無需登入即可使用)
+        ✓ Open Public Access · No Mandatory Sign-In (完全公開 · 無強制登入要求)
       </div>
 
       <p>
-        Welcome to <strong>FONO lofi</strong> ("we", "our", or "us"). FONO lofi is a free ambient focus and study music player that provides curated instrumental lo-fi beats, ambient audio soundscapes, and personal listening vaults.
-      </p>
-      <p>
-        <strong>Ungated Access:</strong> You can use FONO lofi, browse all music, play tracks, and use focus timers completely free without creating an account or logging in. Logging in with Google is 100% voluntary and is only used if you wish to sync custom uploaded audio files and personalized playlists across multiple devices.
+        Welcome to <strong>FONO lofi</strong> ("we", "our", or "us"). We are dedicated to providing a serene, privacy-centric focus companion for deep work, study, and relaxation. This comprehensive Privacy Policy explains how our web application processes information, our strict adherence to international privacy frameworks, our implementation of the <strong>Google API Services User Data Policy</strong>, and your complete rights to your personal data.
       </p>
 
-      <h2>1. Google User Data: Requested Scopes &amp; Exact Purpose (Google 使用者資料收集與用途)</h2>
+      <!-- Quick Jump Table of Contents -->
+      <nav class="toc-box" aria-label="Table of Contents">
+        <h3>📑 Table of Contents (快速目錄)</h3>
+        <ul class="toc-grid">
+          <li><a href="#sec-1">1. Scope &amp; Ungated Public Access</a></li>
+          <li><a href="#sec-2">2. Google API Data &amp; Scopes</a></li>
+          <li><a href="#sec-3">3. Limited Use Compliance</a></li>
+          <li><a href="#sec-4">4. Anti-AI NCII Strict Policy</a></li>
+          <li><a href="#sec-5">5. Local Storage &amp; Audio Vault</a></li>
+          <li><a href="#sec-6">6. Third-Party Integrations</a></li>
+          <li><a href="#sec-7">7. Retention &amp; Deletion Rights</a></li>
+          <li><a href="#sec-8">8. Legal Bases (GDPR / PDPO)</a></li>
+          <li><a href="#sec-9">9. California Privacy Notice (CCPA)</a></li>
+          <li><a href="#sec-10">10. Data Security &amp; Encryption</a></li>
+          <li><a href="#sec-11">11. Children's Privacy (COPPA)</a></li>
+          <li><a href="#sec-12">12. Contact &amp; Governance</a></li>
+        </ul>
+      </nav>
+
+      <h2 id="sec-1">1. Scope &amp; Ungated Public Access (服務範圍與完全公開原則)</h2>
       <p>
-        When you voluntarily choose to sign in with your Google Account, FONO lofi requests the minimum necessary scopes to authenticate you and establish your session. Below is the comprehensive breakdown:
+        <strong>1.1 Public Open Access:</strong> FONO lofi is designed first and foremost as an ungated web utility. Any individual may visit <a href="https://fono-lofi.vercel.app/">https://fono-lofi.vercel.app/</a> and immediately stream curated lo-fi instrumental tracks, configure ambient soundscapes (rain, coffee shop noise, vinyl crackle), and use productivity timers (Pomodoro sessions) without registering, signing up, or providing an email address.
+      </p>
+      <p>
+        <strong>1.2 Voluntary Account Authentication:</strong> Creating an account or signing in via third-party identity providers (Google OAuth 2.0 or Sign in with Apple) is <strong>100% voluntary</strong>. It is exclusively offered for users who wish to synchronize their custom playlists, liked tracks, and personal audio vault across multiple devices or web browsers.
+      </p>
+
+      <h2 id="sec-2">2. Google User Data: Requested Scopes &amp; Exact Purpose (Google 使用者資料收集與明確用途)</h2>
+      <p>
+        When you voluntarily click "Sign in with Google", FONO lofi requests only the absolute minimum, non-sensitive OpenID Connect identity scopes necessary to authenticate your listening session. We do not request access to Google Drive, Gmail, Google Contacts, Google Calendar, YouTube management, or any restricted storage services.
       </p>
 
       <table class="scope-table">
         <thead>
           <tr>
-            <th>Google API Scope</th>
-            <th>Data Accessed (讀取資料)</th>
-            <th>Exact Purpose &amp; How It Is Used (明確用途說明)</th>
+            <th style="width: 25%;">Google API Scope</th>
+            <th style="width: 25%;">Data Accessed (資料項目)</th>
+            <th style="width: 50%;">Exact Purpose &amp; Processing Workflow (明確用途與處理方式)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td><code>openid</code></td>
-            <td>Unique Google User ID (sub)</td>
-            <td>Used securely via OpenID Connect to authenticate your session and associate your private music room.</td>
+            <td>Unique Google Subject ID (sub identifier)</td>
+            <td>Establishes a cryptographically secure OpenID Connect session. Serves as your unique internal identifier to bind your personal playlist configurations to your profile without exposing raw passwords.</td>
           </tr>
           <tr>
-            <td><code>.../auth/userinfo.email</code></td>
-            <td>Email Address (電子郵件地址)</td>
-            <td>Used solely as your primary account identifier so your custom playlists, liked tracks, and audio uploads belong exclusively to you.</td>
+            <td><code>https://www.googleapis.com/auth/userinfo.email</code></td>
+            <td>Email Address &amp; Verification Status</td>
+            <td>Used strictly as your primary account identifier and login handle. Enables playlist retrieval across different devices and allows you to submit account recovery or data deletion requests.</td>
           </tr>
           <tr>
-            <td><code>.../auth/userinfo.profile</code></td>
-            <td>Display Name &amp; Profile Picture (姓名與頭像)</td>
-            <td>Used solely to personalize your listening room header (e.g., displaying your greeting name and avatar). Never published or shared.</td>
+            <td><code>https://www.googleapis.com/auth/userinfo.profile</code></td>
+            <td>Full Name, Given Name, and Avatar Image URL</td>
+            <td>Used solely to personalize your in-app studio greeting (e.g., displaying "Welcome back, Alex") and showing your user avatar in the top-right listening room header. This information is private to your session and never broadcast to public directories.</td>
           </tr>
         </tbody>
       </table>
 
+      <h2 id="sec-3">3. Google API Services User Data Policy / Limited Use Compliance (限制使用規範聲明)</h2>
       <div class="highlight-box">
-        <strong>Google API Services User Data Policy / Limited Use Disclosure (限制使用聲明):</strong><br><br>
-        FONO lofi's use and transfer to any other app of information received from Google APIs will adhere to <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer">Google API Services User Data Policy</a>, including the Limited Use requirements.
-        <ul style="margin-top: 12px; margin-bottom: 0;">
-          <li>We only use Google user data to provide user-facing features (account authentication and playlist syncing).</li>
-          <li>We do <strong>not</strong> sell, rent, or transfer Google user data to third parties, data brokers, or advertising networks.</li>
-          <li>We do <strong>not</strong> use Google user data for serving advertisements (including personalized, re-targeted, or interest-based ads).</li>
-          <li>We do <strong>not</strong> allow humans to read user data unless required by applicable law or to resolve security issues with user consent.</li>
-        </ul>
+        <strong>Mandatory Google Limited Use Disclosure (Google 限制使用規範聲明):</strong><br><br>
+        <strong>FONO lofi's use and transfer to any other app of information received from Google APIs will adhere to <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer">Google API Services User Data Policy</a>, including the Limited Use requirements.</strong>
+      </div>
+      <p>In strict accordance with the Google Limited Use specifications:</p>
+      <ul>
+        <li><strong>No Selling or Brokering:</strong> We never sell, rent, monetize, lease, or trade Google user data to third-party data brokers, marketing intermediaries, or analytics aggregators.</li>
+        <li><strong>Zero Advertising Use:</strong> Google user data is never used, transferred, or disclosed for serving advertisements, including personalized, contextual, behavioral, or interest-based retargeting campaigns.</li>
+        <li><strong>No Credit Scoring or Lending:</strong> Google user data is never utilized to determine creditworthiness or for any financial assessment.</li>
+        <li><strong>No Human Inspection:</strong> No human beings at FONO lofi are permitted to read or view Google user data, with the sole exceptions of:
+          <ol style="margin-top: 6px; padding-left: 20px;">
+            <li>Where we have obtained your affirmative explicit consent to resolve a specific technical bug;</li>
+            <li>Where strictly necessary for internal security investigations (e.g., investigating token tampering or credential abuse); or</li>
+            <li>Where strictly required to comply with applicable statutory laws or binding court orders.</li>
+          </ol>
+        </li>
+      </ul>
+
+      <h2 id="sec-4">4. Strict Policy on AI &amp; Non-Consensual Intimate Imagery (嚴格禁止 AI 非自願親密影像政策)</h2>
+      <p>
+        FONO lofi strictly complies with the <a href="https://developers.google.com/terms" target="_blank" rel="noopener noreferrer">Google APIs Terms of Service</a> and international laws regarding artificial intelligence safety and dignity protection:
+      </p>
+      <div class="sub-box">
+        <strong>🛡️ AI NCII Zero-Tolerance Statement:</strong><br>
+        FONO lofi strictly prohibits, does not support, and does not provide tools for the creation, generation, synthesis, alteration, distribution, or facilitation of <strong>Non-Consensual Intimate Imagery (NCII)</strong>, synthetic sexually explicit depictions, deepfake pornography, or unauthorized digital likeness transformations.
+      </div>
+      <ul>
+        <li><strong>Audio-Only Musical Focus:</strong> Any computational or machine learning algorithms within FONO lofi (such as the "Mood DJ" or focus session presets) operate strictly and exclusively on non-personal musical metadata (BPM tempo, genre classifications, ambient decibel balancing) to arrange instrumental audio streams.</li>
+        <li><strong>No Generative Image Models:</strong> FONO lofi does not operate image-to-image or text-to-image diffusion models, facial landmark detectors, or video synthesis engines. Google APIs are never connected to any generative imaging or facial synthesis infrastructure.</li>
+      </ul>
+
+      <h2 id="sec-5">5. Local Storage, Cookies &amp; Private Audio Vault (本機儲存與個人音樂保險庫)</h2>
+      <p>
+        FONO lofi prioritizes client-side data privacy to ensure maximum user autonomy:
+      </p>
+      <ul>
+        <li><strong>Local Preferences (HTML5 localStorage):</strong> Your visual theme selection (obsidian dark, cream light, latte), audio volume balances, equalizer presets, and focus timer configurations are stored entirely inside your local browser's sandboxed storage.</li>
+        <li><strong>Private Audio Vault:</strong> When you upload custom audio files (MP3, WAV, FLAC) into your library vault, the audio binary data is stored locally within your sandboxed browser storage. FONO lofi does not copy, index, or distribute your private audio files to third parties.</li>
+        <li><strong>No Invasive Tracking Cookies:</strong> FONO lofi does not deploy third-party advertising trackers, cross-site behavioral cookies, or canvas fingerprinting scripts.</li>
+      </ul>
+
+      <h2 id="sec-6">6. Third-Party Service Providers &amp; Sub-Processors (第三方服務供應商)</h2>
+      <p>
+        To deliver a dependable global audio streaming experience, we collaborate with a limited group of reputable enterprise infrastructure providers:
+      </p>
+      <table class="scope-table">
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>Role &amp; Service</th>
+            <th>Location &amp; Safeguards</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Google LLC</strong></td>
+            <td>Google Identity Services / OAuth 2.0 user authentication.</td>
+            <td>USA / Global. Subject to Google Cloud Privacy &amp; Data Processing Addendum.</td>
+          </tr>
+          <tr>
+            <td><strong>Apple Inc.</strong></td>
+            <td>Sign in with Apple user identity and Touch ID / Face ID authorization.</td>
+            <td>USA / Global. Subject to Apple Privacy Policy &amp; Security Standards.</td>
+          </tr>
+          <tr>
+            <td><strong>Vercel Inc.</strong></td>
+            <td>Serverless edge web hosting, SSL termination, and DDoS mitigation.</td>
+            <td>USA / Global Edge CDN. TLS 1.3 encrypted in transit.</td>
+          </tr>
+          <tr>
+            <td><strong>Stripe Inc.</strong></td>
+            <td>PCI-DSS compliant payment processing for optional VIP passes (AlipayHK, Apple Pay, Cards).</td>
+            <td>Global. FONO lofi never touches or stores raw credit card numbers.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 id="sec-7">7. User Rights, Retention &amp; Data Deletion (資料保留、撤銷與刪除權利)</h2>
+      <p>
+        FONO lofi provides instantaneous, user-controlled mechanisms to access, modify, or permanently delete any stored profile information:
+      </p>
+      <div class="sub-box">
+        <h3>Three Complete Methods to Delete or Revoke Your Data:</h3>
+        <ol style="padding-left: 20px; margin: 10px 0;">
+          <li>
+            <strong>Instant In-App Reset:</strong> Navigate to <a href="https://fono-lofi.vercel.app/#settings">Settings (設定)</a> → click <strong>Reset to Defaults (重設所有資料)</strong> or <strong>Sign Out (登出)</strong>. This immediately purges all local cached session tokens, user profiles, playlists, and audio vault indices from your browser.
+          </li>
+          <li>
+            <strong>Revoke Google Account Access:</strong> You can disconnect FONO lofi from your Google Account at any time by visiting your official <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer">Google Account Permissions Manager</a>. Upon revocation, our app is immediately prohibited from receiving refreshed authentication tokens.
+          </li>
+          <li>
+            <strong>Direct Deletion SLA (24–48 Hours):</strong> You can submit a written erasure request to our compliance officer at <a href="mailto:support@fono-lofi.vercel.app">support@fono-lofi.vercel.app</a> with the subject line <em>"Data Deletion Request"</em>. All corresponding server logs and cached identifiers will be permanently destroyed within 48 business hours.
+          </li>
+        </ol>
       </div>
 
-      <h2>2. Strict Policy on AI &amp; Non-Consensual Intimate Imagery (嚴格禁止 AI 非自願親密影像政策)</h2>
+      <h2 id="sec-8">8. Legal Bases for Processing under GDPR &amp; PDPO (處理個人資料之合法依據)</h2>
       <p>
-        FONO lofi is strictly compliant with the <a href="https://developers.google.com/terms" target="_blank" rel="noopener noreferrer">Google APIs Terms of Service</a> and applicable international digital safety standards:
+        For individuals residing in the European Economic Area (EEA), United Kingdom, or Hong Kong SAR, we process your personal data under the following lawful bases:
       </p>
       <ul>
-        <li><strong>No Generative Image / AI NCII:</strong> FONO lofi does not generate, synthesize, modify, host, or distribute Non-Consensual Intimate Imagery (NCII), deepfake adult content, or synthetic depictions of individuals.</li>
-        <li><strong>No Biometric or Facial Processing:</strong> FONO lofi does not use Google APIs or machine learning models for facial recognition, facial synthesis, nude generation, or avatar manipulation.</li>
-        <li><strong>Audio Only:</strong> Any algorithmic features in FONO lofi (such as the "Mood DJ" or focus presets) operate strictly on musical metadata (genre, tempo, ambient noise levels) to generate ambient playlists.</li>
+        <li><strong>Consent (GDPR Art. 6(1)(a)):</strong> When you voluntarily click "Sign in with Google" or "Sign in with Apple", you explicitly consent to our processing of your name and email address to authenticate your session. You may withdraw this consent at any time.</li>
+        <li><strong>Contractual Performance (GDPR Art. 6(1)(b)):</strong> To deliver requested features, such as restoring your saved playlists when you log in on a new device.</li>
+        <li><strong>Legitimate Interests (GDPR Art. 6(1)(f)):</strong> To maintain web infrastructure security, prevent automated bot abuse, and ensure high system availability via standard server access logs.</li>
       </ul>
 
-      <h2>3. General Information Collected &amp; Local Storage (一般資料收集與本機儲存)</h2>
+      <h2 id="sec-9">9. California Privacy Notice (CCPA / CPRA Disclosures)</h2>
+      <p>
+        Under the California Consumer Privacy Act as amended by the California Privacy Rights Act (CPRA), California residents are entitled to specific disclosures:
+      </p>
       <ul>
-        <li><strong>Local Audio Vault:</strong> Audio tracks you upload to your private vault remain stored directly in your sandboxed browser storage. FONO lofi does not broadcast your private audio files to public feeds.</li>
-        <li><strong>Playback Preferences:</strong> Volume levels, selected soundscapes (rain, cafe noise), theme mode, and timers are stored locally in your browser's <code>localStorage</code>.</li>
-        <li><strong>Server Access Logs:</strong> Basic technical logs (IP address, user agent, timestamps) collected by our hosting provider (Vercel) for cybersecurity and DDoS mitigation.</li>
+        <li><strong>Categories of Personal Information Collected:</strong> Identifiers (name, email address, IP address) and Internet/electronic network activity (playback preferences, local volume state).</li>
+        <li><strong>No Sale or Sharing:</strong> FONO lofi has <strong>NOT</strong> sold or shared any consumer personal information to third parties in the preceding 12 months.</li>
+        <li><strong>Non-Discrimination:</strong> We will not discriminate against you (e.g., denying service, degrading audio quality) for exercising any of your CCPA rights.</li>
       </ul>
 
-      <h2>4. Data Retention and Deletion Mechanism (使用者資料保留、撤銷與刪除機制)</h2>
+      <h2 id="sec-10">10. Data Security &amp; Encryption Standards (資訊安全與防護措施)</h2>
       <p>
-        You have complete sovereignty over your information and can remove your data at any time through three direct mechanisms:
+        We employ multi-layered technical and organizational safeguards to protect your information:
       </p>
-      <ol>
-        <li>
-          <strong>In-App Deletion:</strong> Open the in-app <a href="https://fono-lofi.vercel.app/#settings">Settings</a> menu and click <strong>Reset to Defaults</strong> or <strong>Sign Out</strong>. This immediately purges all locally stored playlists, uploaded audio caches, and active session tokens.
-        </li>
-        <li>
-          <strong>Revoke Google OAuth Access:</strong> You can disconnect FONO lofi from your Google Account at any time through the official <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener noreferrer">Google Account Permissions</a> manager.
-        </li>
-        <li>
-          <strong>Direct Deletion Request:</strong> You can email us at <a href="mailto:support@fono-lofi.vercel.app">support@fono-lofi.vercel.app</a> with your account email address. We permanently remove any account records from our system within 24 to 48 hours.
-        </li>
-      </ol>
+      <ul>
+        <li><strong>TLS 1.3 Cryptographic Transit:</strong> All data transmitted between your web browser, our Vercel edge endpoints, and Google API servers is strictly encrypted using modern Transport Layer Security (TLS 1.3 / HTTPS).</li>
+        <li><strong>Zero Plaintext Credential Storage:</strong> We do not store raw Google account passwords, credit card numbers, or sensitive security credentials. Identity authentication is performed through ephemeral zero-trust tokens.</li>
+        <li><strong>Isolated Client Sandboxing:</strong> User-uploaded files remain sandboxed in browser origin storage (IndexedDB/localStorage) protected by the browser's Same-Origin Policy.</li>
+      </ul>
 
-      <h2>5. Security (資訊安全)</h2>
+      <h2 id="sec-11">11. Children's Privacy (COPPA Compliance)</h2>
       <p>
-        All communications between your device, FONO lofi, and Google APIs are encrypted using industry-standard Transport Layer Security (TLS 1.3 / HTTPS). We do not store raw Google account passwords.
+        FONO lofi is designed for general audiences and productivity purposes. We do not knowingly target, solicit, or collect personal information from children under the age of 13 (or under 16 where required by local law). If we discover that an individual under the age of 13 has provided personal data, we will take immediate steps to delete such information from our records.
       </p>
 
-      <h2>6. Children's Privacy (兒童隱私保護)</h2>
+      <h2 id="sec-12">12. Contact Information &amp; Policy Updates (聯絡我們與政策修訂)</h2>
       <p>
-        FONO lofi is designed for general audiences and does not knowingly collect personal data from children under the age of 13.
+        We may periodically update this Privacy Policy to reflect enhancements to our focus tools or changes in applicable regulatory requirements. Updates will be published on this page with an updated "Effective Date".
       </p>
-
-      <h2>7. Contact Information (聯絡我們)</h2>
-      <p>
-        For inquiries regarding this Privacy Policy, your Google data, or compliance, please reach out to:
-      </p>
-      <p>
-        <strong>FONO lofi Developer &amp; Compliance Team</strong><br>
-        Application Name: FONO lofi<br>
-        Website: <a href="https://fono-lofi.vercel.app/">https://fono-lofi.vercel.app/</a><br>
-        Compliance Email: <a href="mailto:support@fono-lofi.vercel.app">support@fono-lofi.vercel.app</a>
-      </p>
+      <div class="sub-box">
+        <strong>FONO lofi Data Protection &amp; Compliance Team</strong><br>
+        Application Name: <strong>FONO lofi</strong><br>
+        Official Domain: <a href="https://fono-lofi.vercel.app/">https://fono-lofi.vercel.app/</a><br>
+        Inquiries &amp; Data Subject Requests: <a href="mailto:support@fono-lofi.vercel.app">support@fono-lofi.vercel.app</a><br>
+        Jurisdiction: Hong Kong Special Administrative Region
+      </div>
     </main>
 
     <footer>

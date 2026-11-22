@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Terms of Service · 服務條款 — FONO lofi</title>
+  <meta name="description" content="Official Terms of Service for FONO lofi. Comprehensive terms on public access, Google APIs compliance, Anti-AI NCII policy, user content ownership, and intellectual property." />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -12,9 +13,10 @@
       --bg: #fcecdc;
       --card: #fdf5ec;
       --ink: #3d2b1f;
-      --muted: #75604f;
+      --muted: #6b5646;
       --line: rgba(61, 43, 31, 0.12);
       --accent: #e8613c;
+      --accent-soft: rgba(232, 97, 60, 0.08);
       --accent-ink: #ffffff;
       --radius: 20px;
     }
@@ -23,9 +25,10 @@
         --bg: #141210;
         --card: #1f1c19;
         --ink: #fdf5ec;
-        --muted: #a39284;
-        --line: rgba(253, 245, 236, 0.1);
+        --muted: #b09e90;
+        --line: rgba(253, 245, 236, 0.12);
         --accent: #f09064;
+        --accent-soft: rgba(240, 144, 100, 0.12);
       }
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,23 +36,23 @@
       background-color: var(--bg);
       color: var(--ink);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Urbanist", Helvetica, Arial, sans-serif;
-      line-height: 1.7;
-      padding: 36px 20px;
+      line-height: 1.75;
+      padding: 40px 20px;
       display: flex;
       justify-content: center;
     }
     .container {
-      max-width: 860px;
+      max-width: 900px;
       width: 100%;
       background: var(--card);
       border-radius: var(--radius);
-      padding: 44px 40px;
+      padding: 48px 44px;
       border: 1px solid var(--line);
       box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
     }
     header {
       border-bottom: 1px solid var(--line);
-      padding-bottom: 24px;
+      padding-bottom: 28px;
       margin-bottom: 32px;
       display: flex;
       justify-content: space-between;
@@ -64,49 +67,116 @@
       text-decoration: none;
       color: var(--ink);
       font-weight: 800;
-      font-size: 22px;
+      font-size: 24px;
     }
     .back-btn {
       display: inline-flex;
       align-items: center;
-      padding: 9px 18px;
+      padding: 10px 20px;
       border-radius: 999px;
       background: var(--accent);
       color: var(--accent-ink);
       text-decoration: none;
-      font-size: 13px;
+      font-size: 13.5px;
       font-weight: 700;
       transition: opacity 0.2s;
     }
     .back-btn:hover { opacity: 0.9; }
-    h1 { font-size: 30px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.02em; }
-    .updated { font-size: 13.5px; color: var(--muted); margin-bottom: 24px; font-weight: 600; }
-    h2 { font-size: 19px; font-weight: 700; margin: 36px 0 14px; color: var(--ink); border-left: 4px solid var(--accent); padding-left: 12px; }
-    p, ul, ol { margin-bottom: 16px; font-size: 14.5px; color: var(--ink); }
-    ul, ol { padding-left: 24px; }
-    li { margin-bottom: 8px; }
-    .highlight-box {
-      background: rgba(232, 97, 60, 0.08);
-      border: 1.5px solid rgba(232, 97, 60, 0.35);
-      border-radius: 14px;
-      padding: 20px 22px;
-      margin: 24px 0;
-      font-size: 14px;
+    h1 { font-size: 32px; font-weight: 800; margin-bottom: 8px; letter-spacing: -0.02em; }
+    .meta-bar {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin-bottom: 24px;
+      font-weight: 600;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      padding: 12px 16px;
+      background: rgba(0, 0, 0, 0.03);
+      border-radius: 10px;
+      border: 1px solid var(--line);
     }
     .badge-pill {
       display: inline-block;
       background: #e8f5e9;
       color: #2e7d32;
       border: 1px solid #c8e6c9;
-      padding: 4px 12px;
+      padding: 4px 14px;
       border-radius: 999px;
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 700;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+    }
+    .toc-box {
+      background: var(--accent-soft);
+      border: 1.5px solid rgba(232, 97, 60, 0.25);
+      border-radius: 14px;
+      padding: 22px 26px;
+      margin: 24px 0 36px;
+      font-size: 13.5px;
+    }
+    .toc-box h3 {
+      margin: 0 0 12px;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 8px 16px;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    .toc-grid li a {
+      color: var(--ink);
+      text-decoration: none;
+      font-weight: 600;
+      display: block;
+      padding: 2px 0;
+    }
+    .toc-grid li a:hover {
+      color: var(--accent);
+      text-decoration: underline;
+    }
+    h2 {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 40px 0 16px;
+      color: var(--ink);
+      border-left: 4.5px solid var(--accent);
+      padding-left: 14px;
+      scroll-margin-top: 24px;
+    }
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 22px 0 10px;
+      color: var(--ink);
+    }
+    p, ul, ol { margin-bottom: 16px; font-size: 14.5px; color: var(--ink); }
+    ul, ol { padding-left: 24px; }
+    li { margin-bottom: 8px; }
+    .highlight-box {
+      background: var(--accent-soft);
+      border: 1.5px solid rgba(232, 97, 60, 0.35);
+      border-radius: 14px;
+      padding: 22px 24px;
+      margin: 24px 0;
+      font-size: 14px;
+    }
+    .sub-box {
+      background: rgba(0, 0, 0, 0.025);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 14px;
     }
     footer {
-      margin-top: 44px;
-      padding-top: 24px;
+      margin-top: 50px;
+      padding-top: 28px;
       border-top: 1px solid var(--line);
       font-size: 13px;
       color: var(--muted);
@@ -123,7 +193,7 @@
   <div class="container">
     <header>
       <a href="https://fono-lofi.vercel.app/" class="brand">
-        <img src="/fono-logo-badge.png" alt="FONO lofi" style="width: 40px; height: 40px; border-radius: 10px; vertical-align: middle;" />
+        <img src="/fono-logo-badge.png" alt="FONO lofi" style="width: 42px; height: 42px; border-radius: 10px; vertical-align: middle;" />
         <span>FONO lofi</span>
       </a>
       <a href="https://fono-lofi.vercel.app/" class="back-btn">← Back to FONO lofi Home</a>
@@ -131,79 +201,186 @@
 
     <main>
       <h1>Terms of Service · 服務條款</h1>
-      <p class="updated">
-        Effective Date: November 22, 2026 · Application Name: <strong>FONO lofi</strong> · Official Homepage: <a href="https://fono-lofi.vercel.app/">https://fono-lofi.vercel.app/</a>
-      </p>
+      
+      <div class="meta-bar">
+        <span>📅 <strong>Effective Date:</strong> November 22, 2026</span>
+        <span>🏷️ <strong>Application Name:</strong> FONO lofi</span>
+        <span>🌐 <strong>Official Domain:</strong> <a href="https://fono-lofi.vercel.app/">https://fono-lofi.vercel.app/</a></span>
+        <span>✉️ <strong>Legal Inquiries:</strong> support@fono-lofi.vercel.app</span>
+      </div>
 
       <div class="badge-pill">
-        ✓ Open Public Access · No Login Required (完全公開 · 無需登入即可使用)
+        ✓ Open Public Access · No Mandatory Sign-In (完全公開 · 無需登入即可使用)
       </div>
 
       <p>
-        These Terms of Service ("Terms") govern your access to and use of <strong>FONO lofi</strong>, accessible at <a href="https://fono-lofi.vercel.app/">https://fono-lofi.vercel.app/</a>. By accessing or using our application, you agree to comply with and be bound by these Terms.
+        These Terms of Service ("Terms") constitute a legally binding agreement between you and <strong>FONO lofi</strong> ("we", "us", or "our") regarding your access to and use of our web application located at <a href="https://fono-lofi.vercel.app/">https://fono-lofi.vercel.app/</a> and related services.
+      </p>
+      <p>
+        By accessing or using FONO lofi, you acknowledge that you have read, understood, and agree to be bound by these Terms and our <a href="https://fono-lofi.vercel.app/privacy">Privacy Policy</a>. If you do not agree to these Terms, please discontinue use immediately.
       </p>
 
-      <h2>1. Purpose &amp; Description of FONO lofi (應用程式用途與服務說明)</h2>
+      <!-- Quick Jump Table of Contents -->
+      <nav class="toc-box" aria-label="Table of Contents">
+        <h3>📑 Table of Contents (快速目錄)</h3>
+        <ul class="toc-grid">
+          <li><a href="#terms-1">1. Acceptance &amp; Eligibility</a></li>
+          <li><a href="#terms-2">2. Description of Application Purpose</a></li>
+          <li><a href="#terms-3">3. Voluntary Account Sign-In</a></li>
+          <li><a href="#terms-4">4. Google APIs Terms Compliance</a></li>
+          <li><a href="#terms-5">5. Strict Anti-AI NCII Prohibition</a></li>
+          <li><a href="#terms-6">6. User Content &amp; Audio Vault</a></li>
+          <li><a href="#terms-7">7. Prohibited Conduct</a></li>
+          <li><a href="#terms-8">8. Third-Party Integrations</a></li>
+          <li><a href="#terms-9">9. Optional VIP Pass &amp; Payments</a></li>
+          <li><a href="#terms-10">10. Intellectual Property Rights</a></li>
+          <li><a href="#terms-11">11. Termination &amp; Account Deletion</a></li>
+          <li><a href="#terms-12">12. Disclaimers of Warranties</a></li>
+          <li><a href="#terms-13">13. Limitation of Liability</a></li>
+          <li><a href="#terms-14">14. Governing Law &amp; Contact</a></li>
+        </ul>
+      </nav>
+
+      <h2 id="terms-1">1. Acceptance &amp; Eligibility (同意條款與使用資格)</h2>
       <p>
-        <strong>FONO lofi</strong> is a free, web-based ambient music and study companion designed to enhance focus, relaxation, and deep work. Core features include:
+        By using FONO lofi, you represent and warrant that you are at least 13 years of age (or the minimum legal age required in your jurisdiction to consent to web services). If you are under the age of majority in your jurisdiction, you represent that your parent or legal guardian has reviewed and agreed to these Terms on your behalf.
+      </p>
+
+      <h2 id="terms-2">2. Description of Application Purpose (應用程式用途與核心服務)</h2>
+      <p>
+        <strong>2.1 Application Purpose:</strong> FONO lofi is a free, web-based ambient focus, study, and relaxation music player. It is specifically designed to aid concentration, deep work sessions, writing, reading, and meditation.
+      </p>
+      <p>
+        <strong>2.2 Core Product Capabilities:</strong>
       </p>
       <ul>
         <li>Curated instrumental lo-fi hip hop, jazzhop, acoustic, and ambient music streams.</li>
-        <li>Focus timers, Pomodoro work/break cycles, and personal listening statistics.</li>
-        <li>A private local music vault allowing users to upload and organize their personal audio files.</li>
-        <li><strong>Open &amp; Ungated Access:</strong> FONO lofi is publicly accessible without creating an account or logging in. Logging in with Google or Apple ID is completely optional and intended solely to save custom playlists and synced library preferences.</li>
+        <li>Customizable background environmental soundscapes (rain intensity, cafe murmur, analog vinyl crackle).</li>
+        <li>Productivity focus timers including Pomodoro work/rest cycles and listening duration statistics.</li>
+        <li>A client-side private music vault enabling users to upload and play their own personal audio files.</li>
       </ul>
-
-      <h2>2. Compliance with Google APIs Terms of Service (遵守 Google APIs 服務條款)</h2>
       <p>
-        FONO lofi strictly complies with the <a href="https://developers.google.com/terms" target="_blank" rel="noopener noreferrer">Google APIs Terms of Service</a> and the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer">Google API Services User Data Policy</a>:
+        <strong>2.3 Ungated Public Access:</strong> FONO lofi does not enforce paywalls or mandatory account walls to stream music. All core audio streaming, soundscape mixing, and focus timers are accessible immediately to any visitor without logging in.
+      </p>
+
+      <h2 id="terms-3">3. Voluntary Account Sign-In &amp; Authentication (自願性帳戶登入)</h2>
+      <p>
+        <strong>3.1 Optional Sign-In:</strong> You are not required to create an account or sign in to use FONO lofi. Signing in via Google OAuth 2.0 or Sign in with Apple is purely optional and is provided solely for users who wish to persist and synchronize custom playlists and uploaded audio vaults across different devices.
+      </p>
+      <p>
+        <strong>3.2 Account Integrity:</strong> You are responsible for maintaining the confidentiality of your device and login credentials. You agree to notify us immediately of any unauthorized use of your session.
+      </p>
+
+      <h2 id="terms-4">4. Compliance with Google APIs Terms of Service (遵守 Google APIs 服務條款)</h2>
+      <p>
+        FONO lofi's integration with Google Identity Services strictly complies with the <a href="https://developers.google.com/terms" target="_blank" rel="noopener noreferrer">Google APIs Terms of Service</a> and the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener noreferrer">Google API Services User Data Policy</a>:
       </p>
       <ul>
-        <li><strong>Authorized Use Only:</strong> We use Google APIs solely to authenticate consenting users and establish their personalized music room session.</li>
-        <li><strong>No Unauthorized Access:</strong> We do not intercept, scrape, or repurpose Google API credentials or tokens for any unauthorized activities.</li>
+        <li><strong>Authorized Scope Limitations:</strong> We only request the minimum non-sensitive scopes (<code>openid</code>, <code>email</code>, <code>profile</code>) necessary to identify consenting users. We do not access Google Drive, Gmail, or any other Google services.</li>
+        <li><strong>Zero Data Selling:</strong> We do not sell, rent, or transfer Google user data to data brokers or advertising exchanges.</li>
+        <li><strong>Limited Use Commitment:</strong> Our handling of information received from Google APIs adheres to the Google API Services User Data Policy, including the Limited Use requirements.</li>
       </ul>
 
+      <h2 id="terms-5">5. Strict Anti-AI NCII Prohibition (嚴格禁止 AI 非自願親密影像政策)</h2>
       <div class="highlight-box">
-        <strong>Strict Prohibition on AI-Generated Non-Consensual Intimate Imagery (NCII 嚴格禁止條款):</strong><br><br>
-        In accordance with Google APIs Terms of Service, applicable laws, and platform policies, FONO lofi strictly prohibits and does <strong>not</strong> engage in the generation, synthesis, distribution, or facilitation of Non-Consensual Intimate Imagery (NCII), deepfake adult content, or any sexually explicit depictions. FONO lofi does not provide generative image tools, facial modification technology, or synthetic video capabilities.
+        <strong>🛡️ Zero-Tolerance Prohibition on Non-Consensual Intimate Imagery (NCII):</strong><br><br>
+        In accordance with the Google APIs Terms of Service and applicable global safety laws, FONO lofi strictly prohibits and does <strong>not</strong> engage in, support, or provide tools for the creation, generation, synthesis, alteration, hosting, or distribution of:
+        <ul style="margin-top: 10px; margin-bottom: 0;">
+          <li>Non-Consensual Intimate Imagery (NCII);</li>
+          <li>Sexually explicit deepfakes or synthetic sexual content;</li>
+          <li>Non-consensual biometric or facial modification of real persons; or</li>
+          <li>Any image synthesis tool intended to harm, defame, or sexually depict individuals without consent.</li>
+        </ul>
       </div>
+      <p>
+        <strong>Audio-Only Operation:</strong> FONO lofi is exclusively an ambient audio and focus music utility. Any AI-assisted features (such as algorithmic mood recommendations or focus presets) operate solely on acoustic metadata (tempo, genre, key) and never process images, video frames, or facial data.
+      </p>
 
-      <h2>3. User Content &amp; Intellectual Property (使用者內容與智慧財產權)</h2>
+      <h2 id="terms-6">6. User Content &amp; Private Audio Vault (使用者內容與上傳保險庫)</h2>
+      <p>
+        <strong>6.1 100% User Ownership:</strong> You retain complete, unrestricted copyright and ownership of any audio files, audio tracks, or playlist metadata you upload or create in your private FONO vault. We claim no ownership, license, or copyright over your files.
+      </p>
+      <p>
+        <strong>6.2 Lawful Content Representation:</strong> You represent and warrant that:
+      </p>
       <ul>
-        <li><strong>User Ownership:</strong> You retain 100% full copyright and ownership of any audio files or playlists you upload to your private vault in FONO lofi. We claim no ownership or licensing rights over your personal files.</li>
-        <li><strong>Lawful Content:</strong> You agree not to upload audio files that infringe on third-party intellectual property rights, contain malicious code, or violate applicable laws.</li>
+        <li>You possess all necessary rights, licenses, or permissions to upload and play your audio files;</li>
+        <li>Your uploaded files do not infringe upon any third-party copyright, trademark, patent, or proprietary right; and</li>
+        <li>Your files do not contain malware, trojans, worms, or malicious code.</li>
+      </ul>
+      <p>
+        <strong>6.3 DMCA &amp; Copyright Notice:</strong> If you believe any content on FONO lofi infringes your copyright, please send a written takedown notice to <a href="mailto:support@fono-lofi.vercel.app">support@fono-lofi.vercel.app</a> with detailed identification of the copyrighted work and contact information. We act promptly upon valid notices.
+      </p>
+
+      <h2 id="terms-7">7. Prohibited Conduct (禁止使用行為)</h2>
+      <p>You agree not to engage in any of the following prohibited activities:</p>
+      <ul>
+        <li>Reverse-engineering, decompiling, or attempting to extract the source code of our proprietary tactile feedback engine or vinyl rendering shaders;</li>
+        <li>Using automated web scrapers, bots, or spiders to overwhelm or harvest application endpoints;</li>
+        <li>Attempting to bypass, disable, or tamper with security or authentication tokens;</li>
+        <li>Using the service for any unlawful, fraudulent, defamatory, or harassing purpose; or</li>
+        <li>Transmitting viruses, ransomware, or code designed to disrupt server performance.</li>
       </ul>
 
-      <h2>4. Third-Party Integrations (第三方服務整合)</h2>
+      <h2 id="terms-8">8. Third-Party Integrations &amp; External Links (第三方服務整合)</h2>
       <p>
-        FONO lofi may link or interface with trusted third-party providers (Google Identity Services, Apple Sign In, YouTube audio streams, Spotify metadata). Your interaction with third parties is governed by their respective terms of service:
+        FONO lofi interfaces with authorized third-party services to deliver enhanced music features (Google Identity Services, Apple Sign In, YouTube audio streams, Spotify metadata). Your interaction with these third parties is subject to their respective terms of service and privacy practices:
       </p>
       <ul>
         <li><a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer">Google Terms of Service</a></li>
         <li><a href="https://www.youtube.com/t/terms" target="_blank" rel="noopener noreferrer">YouTube Terms of Service</a></li>
         <li><a href="https://www.apple.com/legal/internet-services/itunes/dev/minterms/" target="_blank" rel="noopener noreferrer">Apple Media Services Terms</a></li>
+        <li><a href="https://stripe.com/legal/consumer" target="_blank" rel="noopener noreferrer">Stripe Consumer Terms of Service</a></li>
       </ul>
 
-      <h2>5. Termination &amp; Data Deletion (服務終止與資料清除)</h2>
+      <h2 id="terms-9">9. Optional VIP Pass &amp; Payment Terms (選購方案與付款條款)</h2>
       <p>
-        You can stop using FONO lofi at any time. You can clear your session and delete all local data by clicking <strong>Reset to Defaults</strong> in the in-app <a href="https://fono-lofi.vercel.app/#settings">Settings</a> menu or emailing <a href="mailto:support@fono-lofi.vercel.app">support@fono-lofi.vercel.app</a>.
+        <strong>9.1 Optional Lifetime Upgrade:</strong> Users may voluntarily purchase an optional "VIP Max Lifetime Pass" to unlock premium turntable vinyl skins and lossless acoustic filters. Core lo-fi streaming remains free.
+      </p>
+      <p>
+        <strong>9.2 No Surprise Recurring Subscriptions:</strong> The VIP Max Pass is a <strong>one-time payment</strong> with no hidden monthly recurring charges.
+      </p>
+      <p>
+        <strong>9.3 Payment Gateways:</strong> Payments are processed securely through certified PCI-DSS compliant providers (Stripe, AlipayHK, Apple Pay, Google Pay). FONO lofi does not store raw credit card numbers.
+      </p>
+      <p>
+        <strong>9.4 Refund Policy:</strong> Because the VIP Pass delivers immediate lifetime digital access, sales are generally non-refundable except where required by mandatory local consumer protection law or in cases of verified billing errors.
       </p>
 
-      <h2>6. Disclaimer of Warranties (免責聲明)</h2>
+      <h2 id="terms-10">10. Intellectual Property Rights (平台智慧財產權)</h2>
       <p>
-        FONO lofi is provided on an "AS IS" and "AS AVAILABLE" basis without warranties of any kind. We strive for high uptime and smooth audio playback for focus sessions.
+        All rights, title, and interest in and to FONO lofi—including the vintage turntable brand logo, UI layouts, acoustic click sounds, visual vinyl themes, software code, and graphic assets—are and will remain the exclusive property of FONO lofi. The name "FONO lofi" and associated vinyl marks may not be used in connection with any third-party product without prior written consent.
       </p>
 
-      <h2>7. Contact Information (聯絡資訊)</h2>
+      <h2 id="terms-11">11. Termination &amp; Account Deletion (終止服務與資料刪除)</h2>
       <p>
-        For inquiries regarding these Terms of Service, please contact:
+        <strong>11.1 By You:</strong> You may stop using FONO lofi at any time. You can wipe all locally stored session tokens and uploaded music vaults by clicking <strong>Reset to Defaults</strong> in the <a href="https://fono-lofi.vercel.app/#settings">Settings</a> menu, or submit an erasure request to <a href="mailto:support@fono-lofi.vercel.app">support@fono-lofi.vercel.app</a>.
       </p>
       <p>
-        <strong>FONO lofi Compliance Team</strong><br>
-        Application Name: FONO lofi<br>
-        Official Website: <a href="https://fono-lofi.vercel.app/">https://fono-lofi.vercel.app/</a><br>
-        Support Email: <a href="mailto:support@fono-lofi.vercel.app">support@fono-lofi.vercel.app</a>
+        <strong>11.2 By Us:</strong> We reserve the right to suspend or terminate access to anyone who violates these Terms, abuses our infrastructure, or uploads malicious or infringing material.
       </p>
+
+      <h2 id="terms-12">12. Disclaimers of Warranties (免責聲明)</h2>
+      <p>
+        FONO LOFI IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, WE DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. WE DO NOT GUARANTEE THAT THE APPLICATION WILL BE UNINTERRUPTED, ERROR-FREE, OR FREE OF TEMPORARY DOWNTIME.
+      </p>
+
+      <h2 id="terms-13">13. Limitation of Liability (責任限制)</h2>
+      <p>
+        TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT SHALL FONO LOFI, ITS OPERATORS, DIRECTORS, OR AFFILIATES BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES (INCLUDING LOSS OF PROFITS, DATA, OR USE) ARISING OUT OF OR IN CONNECTION WITH YOUR ACCESS TO OR USE OF THE APPLICATION. OUR TOTAL AGGREGATE LIABILITY SHALL NOT EXCEED THE TOTAL AMOUNT PAID BY YOU TO FONO LOFI IN THE TWELVE (12) MONTHS PRECEDING THE CLAIM (OR $50 USD, WHICHEVER IS GREATER).
+      </p>
+
+      <h2 id="terms-14">14. Governing Law, Dispute Resolution &amp; Contact (準據法與聯絡資訊)</h2>
+      <p>
+        These Terms shall be governed by and construed in accordance with the laws of the Hong Kong Special Administrative Region, without regard to its conflict of law principles. Any dispute arising out of or relating to these Terms shall be resolved through friendly consultation or submitted to the non-exclusive jurisdiction of the courts of Hong Kong.
+      </p>
+      <div class="sub-box">
+        <strong>FONO lofi Legal &amp; Compliance Office</strong><br>
+        Application Name: <strong>FONO lofi</strong><br>
+        Official Domain: <a href="https://fono-lofi.vercel.app/">https://fono-lofi.vercel.app/</a><br>
+        Legal Inquiries &amp; Copyright Notices: <a href="mailto:support@fono-lofi.vercel.app">support@fono-lofi.vercel.app</a><br>
+        Jurisdiction: Hong Kong Special Administrative Region
+      </div>
     </main>
 
     <footer>
