@@ -13,7 +13,7 @@ declare global {
         };
         oauth2: {
           initTokenClient: (config: any) => {
-            requestAccessToken: () => void;
+            requestAccessToken: (overrideConfig?: any) => void;
           };
         };
       };
@@ -30,6 +30,7 @@ export interface GoogleUser {
 
 const STORAGE_KEY_CLIENT_ID = 'fono:google_client_id';
 const LEGACY_STORAGE_KEY_CLIENT_ID = 'lullo:google_client_id';
+export const FONO_AUTH_CHANNEL = 'fono_auth_channel';
 
 // Real Official Google Cloud OAuth 2.0 Client ID for FONO lofi
 const DEFAULT_CLIENT_ID = '79960096223-7bi6j6glct7hl7pc9urvtls6tu6tm835.apps.googleusercontent.com';
@@ -38,6 +39,7 @@ class GoogleAuthService {
   private isScriptLoaded = false;
   private clientId: string = DEFAULT_CLIENT_ID;
   private activeSuccessCallback: ((user: GoogleUser) => void) | null = null;
+  private authChannel: BroadcastChannel | null = null;
 
   constructor() {
     if (typeof window !== 'undefined') {
@@ -45,7 +47,7 @@ class GoogleAuthService {
       const envId = (import.meta as any).env?.VITE_GOOGLE_CLIENT_ID;
       this.clientId = saved || envId || DEFAULT_CLIENT_ID;
       this.loadGsiScript();
-      this.setupMessageListener();
+      this.setupListeners();
     }
   }
 
@@ -81,39 +83,66 @@ class GoogleAuthService {
     document.head.appendChild(script);
   }
 
-  private setupMessageListener() {
+  private setupListeners() {
     if (typeof window === 'undefined') return;
+
+    // 1. PostMessage Listener (from child popup windows)
     window.addEventListener('message', (event) => {
-      // Validate origin if not localhost
-      if (event.data?.type === 'FONO_GOOGLE_AUTH_CALLBACK' && event.data?.hash) {
-        const user = this.parseHashToken(event.data.hash);
-        if (user && user.email && this.activeSuccessCallback) {
-          this.activeSuccessCallback(user);
-          this.activeSuccessCallback = null;
+      if (event.data?.type === 'FONO_GOOGLE_AUTH_CALLBACK') {
+        const user: GoogleUser | undefined = event.data?.user || (event.data?.hash ? this.parseHashToken(event.data.hash) : undefined);
+        if (user && user.email) {
+          this.dispatchSuccess(user);
         }
       }
     });
+
+    // 2. BroadcastChannel Listener (cross-tab sync)
+    try {
+      this.authChannel = new BroadcastChannel(FONO_AUTH_CHANNEL);
+      this.authChannel.onmessage = (event) => {
+        if (event.data?.type === 'GOOGLE_AUTH_SUCCESS' && event.data?.user) {
+          this.dispatchSuccess(event.data.user);
+        }
+      };
+    } catch {}
+  }
+
+  public dispatchSuccess(user: GoogleUser) {
+    if (this.activeSuccessCallback) {
+      this.activeSuccessCallback(user);
+      this.activeSuccessCallback = null;
+    }
   }
 
   /**
-   * Decodes Google ID Token (JWT) payload without external dependencies
+   * Decodes Google ID Token (JWT) payload with full UTF-8 and padding resilience
    */
   public parseGoogleIdToken(idToken: string): GoogleUser {
     try {
       const parts = idToken.split('.');
-      if (parts.length < 2) throw new Error('Invalid JWT');
-      const payloadBase64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
-      const jsonStr = decodeURIComponent(
-        atob(payloadBase64)
-          .split('')
-          .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-          .join('')
-      );
+      if (parts.length < 2) throw new Error('Invalid JWT: missing parts');
+      
+      let base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+      while (base64.length % 4 !== 0) {
+        base64 += '=';
+      }
+
+      const binaryStr = atob(base64);
+      const bytes = new Uint8Array(binaryStr.length);
+      for (let i = 0; i < binaryStr.length; i++) {
+        bytes[i] = binaryStr.charCodeAt(i);
+      }
+      const jsonStr = new TextDecoder('utf-8').decode(bytes);
       const data = JSON.parse(jsonStr);
+
+      const email = data.email || '';
+      const name = data.name || data.given_name || (email ? email.split('@')[0] : 'Listener');
+      const avatar = data.picture || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(name || 'FONO')}`;
+
       return {
-        name: data.name || data.given_name || (data.email ? data.email.split('@')[0] : 'Listener'),
-        email: data.email || '',
-        avatar: data.picture || `https://api.dicebear.com/7.x/bottts/svg?seed=${data.name || 'FONO'}`,
+        name,
+        email,
+        avatar,
         sub: data.sub || ''
       };
     } catch (e) {
@@ -136,11 +165,88 @@ class GoogleAuthService {
     if (accessToken) {
       return {
         name: 'Google Listener',
-        email: 'user@gmail.com',
+        email: 'google.listener@fono.fm',
         avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=GoogleListener'
       };
     }
     return { name: '', email: '', avatar: '' };
+  }
+
+  /**
+   * High-level entry point for Google Sign-In / Sign-Up.
+   * Prefers official Google Identity Services token client (in-page popup with no redirect COOP loss),
+   * falling back to the standard OAuth web authorization popup if GSI is not yet available.
+   */
+  public async signInWithGoogle(options?: {
+    onSuccess?: (userData: GoogleUser) => void;
+    onError?: (error: string) => void;
+  }): Promise<void> {
+    if (typeof window === 'undefined') return;
+
+    if (options?.onSuccess) {
+      this.activeSuccessCallback = options.onSuccess;
+    }
+
+    // 1. If Google Identity Services OAuth2 token client is loaded
+    if (window.google?.accounts?.oauth2) {
+      try {
+        const tokenClient = window.google.accounts.oauth2.initTokenClient({
+          client_id: this.clientId,
+          scope: 'openid email profile',
+          callback: async (tokenResponse: any) => {
+            if (tokenResponse?.error) {
+              console.warn('[GoogleAuth] Token response error:', tokenResponse.error);
+              options?.onError?.(tokenResponse.error);
+              return;
+            }
+            if (tokenResponse?.access_token) {
+              try {
+                const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                  headers: { Authorization: `Bearer ${tokenResponse.access_token}` }
+                });
+                const info = await res.json();
+                const user: GoogleUser = {
+                  name: info.name || info.given_name || (info.email ? info.email.split('@')[0] : 'Listener'),
+                  email: info.email || '',
+                  avatar: info.picture || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(info.name || 'FONO')}`,
+                  sub: info.sub || ''
+                };
+                if (user.email) {
+                  this.broadcastLogin(user);
+                  this.dispatchSuccess(user);
+                  return;
+                }
+              } catch (e) {
+                console.warn('[GoogleAuth] Userinfo fetch failed', e);
+              }
+            }
+          },
+          error_callback: (error: any) => {
+            console.warn('[GoogleAuth] GSI tokenClient error_callback, falling back to popup', error);
+            this.openOfficialGoogleOAuthPopup(options);
+          }
+        });
+
+        tokenClient.requestAccessToken({ prompt: 'select_account' });
+        return;
+      } catch (err) {
+        console.warn('[GoogleAuth] GSI token client init error, falling back to popup', err);
+      }
+    }
+
+    // 2. Fallback to Official Google Web OAuth Popup
+    this.openOfficialGoogleOAuthPopup(options);
+  }
+
+  /**
+   * Broadcast login to all tabs and windows
+   */
+  public broadcastLogin(user: GoogleUser) {
+    try {
+      if (this.authChannel) {
+        this.authChannel.postMessage({ type: 'GOOGLE_AUTH_SUCCESS', user });
+      }
+    } catch {}
   }
 
   /**
@@ -155,6 +261,7 @@ class GoogleAuthService {
           if (response?.credential) {
             const user = this.parseGoogleIdToken(response.credential);
             if (user && user.email) {
+              this.broadcastLogin(user);
               onSuccess(user);
             }
           }
@@ -228,19 +335,15 @@ class GoogleAuthService {
 
       try {
         // Once redirected back to window.location.origin, it is same-origin
-        if (popup.location && popup.location.href.includes(window.location.origin)) {
+        if (popup.location && popup.location.href && popup.location.href.includes(window.location.origin)) {
           const hash = popup.location.hash;
           if (hash && (hash.includes('id_token=') || hash.includes('access_token='))) {
             const user = this.parseHashToken(hash);
             clearInterval(checkTimer);
             try { popup.close(); } catch {}
             if (user && user.email) {
-              if (this.activeSuccessCallback) {
-                this.activeSuccessCallback(user);
-                this.activeSuccessCallback = null;
-              } else {
-                options?.onSuccess?.(user);
-              }
+              this.broadcastLogin(user);
+              this.dispatchSuccess(user);
             }
           }
         }

@@ -6,6 +6,7 @@ import { tactile } from '../services/tactileFeedback';
 import { formatDuration } from '../ui/format';
 import { AudioUploader } from '../components/AudioUploader';
 import { CheckoutModal } from '../components/CheckoutModal';
+import { googleAuthService } from '../services/googleAuth';
 
 export interface ProfileProps {
   onNavigate?: (route: string) => void;
@@ -199,7 +200,20 @@ export const Profile: React.FC<ProfileProps> = ({ onNavigate, onOpenAuth }) => {
                   }}
                   onClick={() => {
                     tactile.click('click');
-                    onOpenAuth?.('signin');
+                    googleAuthService.signInWithGoogle({
+                      onSuccess: (userData) => {
+                        storeActions.loginUser({
+                          name: userData.name,
+                          email: userData.email,
+                          avatar: userData.avatar,
+                          provider: 'google',
+                          rememberMe: true
+                        });
+                      },
+                      onError: () => {
+                        onOpenAuth?.('signin');
+                      }
+                    });
                   }}
                 >
                   <Icon name="google" size="xs" />

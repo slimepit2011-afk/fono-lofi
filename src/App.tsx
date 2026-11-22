@@ -61,27 +61,16 @@ export const App: React.FC = () => {
     }
   };
 
-  // Global Google OAuth Handlers (Popup opener & direct redirect)
+  // Global Google OAuth Handlers (Popup opener, cross-window BroadcastChannel, & direct redirect)
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    // 1. If running inside Google OAuth popup window
-    if (window.opener && window.location.hash) {
-      const hash = window.location.hash;
-      if (hash.includes('id_token=') || hash.includes('access_token=')) {
-        try {
-          window.opener.postMessage({ type: 'FONO_GOOGLE_AUTH_CALLBACK', hash }, window.location.origin);
-          window.close();
-          return;
-        } catch (e) {
-          console.warn('Failed to communicate with opener window', e);
-        }
-      }
-    }
+    const isPopup = window.opener !== null || window.name === 'GoogleSignIn' || (window.innerWidth <= 600 && window.innerHeight <= 700);
+    const hash = window.location.hash;
 
-    // 2. If running in top-level window after redirect
-    if (window.location.hash && (window.location.hash.includes('id_token=') || window.location.hash.includes('access_token='))) {
-      const user = googleAuthService.parseHashToken(window.location.hash);
+    // Handle token return from Google OAuth
+    if (hash && (hash.includes('id_token=') || hash.includes('access_token='))) {
+      const user = googleAuthService.parseHashToken(hash);
       if (user && user.email) {
         storeActions.loginUser({
           name: user.name,
@@ -90,15 +79,37 @@ export const App: React.FC = () => {
           provider: 'google',
           rememberMe: true
         });
+
+        // 1. Broadcast to opener or peer windows
+        googleAuthService.broadcastLogin(user);
+
+        // 2. PostMessage to opener if available
+        if (window.opener) {
+          try {
+            window.opener.postMessage({ type: 'FONO_GOOGLE_AUTH_CALLBACK', hash, user }, window.location.origin);
+          } catch (e) {
+            console.warn('Failed to communicate with opener window', e);
+          }
+        }
+
+        // 3. If running inside an OAuth popup window, close automatically
+        if (isPopup) {
+          setTimeout(() => {
+            try { window.close(); } catch {}
+          }, 400);
+          return;
+        }
+
+        // 4. In top-level full page, replace history and show profile
         window.history.replaceState(null, '', window.location.pathname);
         setRoute('profile');
       }
     }
 
-    // 3. Listen for popup response
+    // Listen for postMessage from popup windows
     const handleMsg = (e: MessageEvent) => {
-      if (e.data?.type === 'FONO_GOOGLE_AUTH_CALLBACK' && e.data?.hash) {
-        const user = googleAuthService.parseHashToken(e.data.hash);
+      if (e.data?.type === 'FONO_GOOGLE_AUTH_CALLBACK') {
+        const user = e.data?.user || (e.data?.hash ? googleAuthService.parseHashToken(e.data.hash) : null);
         if (user && user.email) {
           storeActions.loginUser({
             name: user.name,
@@ -112,7 +123,24 @@ export const App: React.FC = () => {
       }
     };
     window.addEventListener('message', handleMsg);
-    return () => window.removeEventListener('message', handleMsg);
+
+    // Listen for BroadcastChannel sync
+    let authChan: BroadcastChannel | null = null;
+    try {
+      authChan = new BroadcastChannel('fono_auth_channel');
+      authChan.onmessage = (e) => {
+        if (e.data?.type === 'GOOGLE_AUTH_SUCCESS' && e.data?.user) {
+          setRoute('profile');
+        }
+      };
+    } catch {}
+
+    return () => {
+      window.removeEventListener('message', handleMsg);
+      if (authChan) {
+        try { authChan.close(); } catch {}
+      }
+    };
   }, []);
 
   useEffect(() => {

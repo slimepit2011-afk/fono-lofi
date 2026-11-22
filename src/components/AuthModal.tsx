@@ -34,13 +34,21 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   const handleGoogleSuccess = (userData: { name: string; email: string; avatar: string; rememberMe: boolean }) => {
     // Both register and signin with Google establish registered status
-    const profile = storeActions.loginUser({
-      name: userData.name,
-      email: userData.email,
-      avatar: userData.avatar,
-      provider: 'google',
-      rememberMe: userData.rememberMe
-    });
+    const profile = mode === 'register'
+      ? storeActions.registerUser({
+          name: userData.name,
+          email: userData.email,
+          avatar: userData.avatar,
+          provider: 'google',
+          rememberMe: userData.rememberMe
+        })
+      : storeActions.loginUser({
+          name: userData.name,
+          email: userData.email,
+          avatar: userData.avatar,
+          provider: 'google',
+          rememberMe: userData.rememberMe
+        });
     setStatusMsg({
       type: 'ok',
       text: `✓ Connected with Google! Welcome ${profile.name}.`
@@ -203,7 +211,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             onClick={() => {
               tactile.click('click');
               setIsLoading(true);
-              googleAuthService.openOfficialGoogleOAuthPopup({
+              googleAuthService.signInWithGoogle({
                 onSuccess: (userData) => {
                   setIsLoading(false);
                   handleGoogleSuccess({

@@ -145,6 +145,29 @@ function loadStoredData(): AppData {
 let currentData: AppData = loadStoredData();
 const listeners = new Set<() => void>();
 
+// Synchronize state across tabs, popups, and OAuth redirects
+if (typeof window !== 'undefined') {
+  window.addEventListener('storage', (event) => {
+    if (event.key === STORAGE_KEY || event.key === 'fono:user_session' || event.key === LEGACY_STORAGE_KEY) {
+      currentData = loadStoredData();
+      listeners.forEach(fn => fn());
+    }
+  });
+
+  try {
+    const authChannel = new BroadcastChannel('fono_auth_channel');
+    authChannel.onmessage = (event) => {
+      if (event.data?.type === 'LOGIN' && event.data?.profile) {
+        currentData = loadStoredData();
+        listeners.forEach(fn => fn());
+      } else if (event.data?.type === 'LOGOUT') {
+        currentData = loadStoredData();
+        listeners.forEach(fn => fn());
+      }
+    };
+  } catch {}
+}
+
 function emitChange() {
   currentData = {
     ...currentData,
@@ -836,6 +859,10 @@ export const storeActions = {
         localStorage.setItem('fono:remember_me', 'true');
         localStorage.setItem('lullo:remember_me', 'true');
       }
+      try {
+        const authChannel = new BroadcastChannel('fono_auth_channel');
+        authChannel.postMessage({ type: 'LOGIN', profile: currentData.profile });
+      } catch {}
     }
 
     // User directive: Delete all default songs when user registers so each has unique uploaded songs
@@ -905,6 +932,10 @@ export const storeActions = {
         localStorage.setItem('fono:remember_me', 'true');
         localStorage.setItem('lullo:remember_me', 'true');
       }
+      try {
+        const authChannel = new BroadcastChannel('fono_auth_channel');
+        authChannel.postMessage({ type: 'LOGIN', profile: currentData.profile });
+      } catch {}
     }
     emitChange();
     return currentData.profile;
@@ -929,6 +960,10 @@ export const storeActions = {
       localStorage.removeItem('fono:user_session');
       localStorage.removeItem('lullo:remember_me');
       localStorage.removeItem('lullo:user_session');
+      try {
+        const authChannel = new BroadcastChannel('fono_auth_channel');
+        authChannel.postMessage({ type: 'LOGOUT' });
+      } catch {}
     }
     if (currentData.tracks.length === 0) {
       currentData.tracks = INITIAL_TRACKS.slice();

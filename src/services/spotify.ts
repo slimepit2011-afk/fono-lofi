@@ -55,16 +55,21 @@ class SpotifyService {
   }
 
   // Parse token from OAuth redirect: #access_token=...
+  // CRITICAL GUARD: Only parse if this is genuinely a Spotify callback; NEVER intercept Google OAuth (id_token, openid)
   private parseHashToken() {
     if (typeof window === 'undefined') return;
     const hash = window.location.hash;
-    if (hash && hash.includes('access_token=')) {
+    if (hash && hash.includes('access_token=') && !hash.includes('id_token') && !hash.includes('accounts.google.com')) {
       const params = new URLSearchParams(hash.substring(1));
-      const token = params.get('access_token');
-      if (token) {
-        this.accessToken = token;
-        localStorage.setItem('lullo:spotify_token', token);
-        window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      const state = params.get('state');
+      // Spotify auth initiated by FONO includes state or has no Google id_token
+      if (state?.startsWith('spotify') || !params.has('id_token')) {
+        const token = params.get('access_token');
+        if (token) {
+          this.accessToken = token;
+          localStorage.setItem('lullo:spotify_token', token);
+          window.history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
       }
     }
   }
