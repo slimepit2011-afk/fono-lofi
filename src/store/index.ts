@@ -803,11 +803,12 @@ export const storeActions = {
     rememberMe?: boolean;
   }) {
     const userId = `usr-${Date.now()}`;
-    const handle = (name || email.split('@')[0]).toLowerCase().replace(/[^a-z0-9]/g, '');
+    const cleanName = (name && name !== 'Guest Listener') ? name : (email ? email.split('@')[0] : 'New Listener');
+    const handle = (cleanName || email.split('@')[0]).toLowerCase().replace(/[^a-z0-9]/g, '');
 
     currentData.profile = {
       id: userId,
-      name: name || 'New Listener',
+      name: cleanName,
       handle: handle || 'listener',
       email: email || `${handle}@listening.room`,
       city: 'Online',
@@ -876,10 +877,14 @@ export const storeActions = {
     avatar?: string;
     rememberMe?: boolean;
   }) {
+    const derivedHandle = (name || email.split('@')[0] || 'listener').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const cleanName = (name && name !== 'Guest Listener') ? name : (email ? email.split('@')[0] : 'Listener');
+
     currentData.profile = {
       ...currentData.profile,
-      name: name || currentData.profile.name,
+      name: cleanName,
       email: email || currentData.profile.email,
+      handle: (currentData.profile.handle === 'guest' || !currentData.profile.handle) ? derivedHandle : currentData.profile.handle,
       avatar: avatar || currentData.profile.avatar,
       provider,
       rememberMe,

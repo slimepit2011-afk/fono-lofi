@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Icon } from '../ui/icons';
 import { tactile } from '../services/tactileFeedback';
 import { googleAuthService } from '../services/googleAuth';
@@ -22,13 +22,71 @@ export const GoogleAuthPopup: React.FC<GoogleAuthPopupProps> = ({
   const [customEmail, setCustomEmail] = useState('');
   const [clientSavedMsg, setClientSavedMsg] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
+  const googleBtnRef = useRef<HTMLDivElement>(null);
+
+  // Listen for popup cross-window message callback
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleMsg = (e: MessageEvent) => {
+      if (e.data?.type === 'FONO_GOOGLE_AUTH_CALLBACK' && e.data?.hash) {
+        const user = googleAuthService.parseHashToken(e.data.hash);
+        if (user && user.email) {
+          setIsVerifying(false);
+          onSuccess({
+            name: user.name,
+            email: user.email,
+            avatar: user.avatar,
+            rememberMe
+          });
+          onClose();
+        }
+      }
+    };
+
+    window.addEventListener('message', handleMsg);
+    return () => window.removeEventListener('message', handleMsg);
+  }, [isOpen, rememberMe, onSuccess, onClose]);
+
+  // Try rendering official Google button if GSI is available
+  useEffect(() => {
+    if (!isOpen || !googleBtnRef.current) return;
+    try {
+      googleAuthService.renderGoogleButton(googleBtnRef.current, (user) => {
+        setIsVerifying(false);
+        onSuccess({
+          name: user.name,
+          email: user.email,
+          avatar: user.avatar,
+          rememberMe
+        });
+        onClose();
+      });
+    } catch (e) {
+      console.warn('Google button render error:', e);
+    }
+  }, [isOpen, rememberMe, onSuccess, onClose]);
 
   if (!isOpen) return null;
 
   const handleLaunchGooglePopup = () => {
     tactile.click('snap');
+    setIsVerifying(true);
     googleAuthService.openOfficialGoogleOAuthPopup({
-      onError: (err) => alert(err)
+      onSuccess: (userData) => {
+        setIsVerifying(false);
+        onSuccess({
+          name: userData.name,
+          email: userData.email,
+          avatar: userData.avatar,
+          rememberMe
+        });
+        onClose();
+      },
+      onError: (err) => {
+        setIsVerifying(false);
+        alert(err);
+      }
     });
   };
 
@@ -132,14 +190,17 @@ export const GoogleAuthPopup: React.FC<GoogleAuthPopupProps> = ({
             <p className="text-2xs text-gray-600 m-0">
               Opens an official authentication window hosted directly by Google on <code>accounts.google.com</code>.
             </p>
+            <div ref={googleBtnRef} className="flex justify-center my-1 empty:hidden"></div>
+
             <button
               type="button"
               className="btn btn--primary w-full py-2.5 flex items-center justify-center gap-2 font-bold shadow-sm"
               style={{ backgroundColor: '#4285F4', color: '#ffffff', borderColor: '#4285F4' }}
               onClick={handleLaunchGooglePopup}
+              disabled={isVerifying}
             >
               <Icon name="google" size="sm" />
-              <span>Open accounts.google.com Sign-In</span>
+              <span>{isVerifying ? 'Authenticating with Google...' : 'Open accounts.google.com Sign-In'}</span>
             </button>
           </div>
 

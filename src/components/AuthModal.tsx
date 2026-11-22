@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useStore, storeActions } from '../store';
 import { Icon } from '../ui/icons';
 import { tactile } from '../services/tactileFeedback';
+import { googleAuthService } from '../services/googleAuth';
 import { GoogleAuthPopup } from './GoogleAuthPopup';
 import { AppleAuthPopup } from './AppleAuthPopup';
 
@@ -32,34 +33,21 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   if (!isOpen) return null;
 
   const handleGoogleSuccess = (userData: { name: string; email: string; avatar: string; rememberMe: boolean }) => {
-    if (mode === 'register') {
-      storeActions.registerUser({
-        name: userData.name,
-        email: userData.email,
-        avatar: userData.avatar,
-        provider: 'google',
-        rememberMe: userData.rememberMe
-      });
-      setStatusMsg({
-        type: 'ok',
-        text: `Connected with Google! Welcome ${userData.name}. Unique private library initialized.`
-      });
-    } else {
-      storeActions.loginUser({
-        name: userData.name,
-        email: userData.email,
-        avatar: userData.avatar,
-        provider: 'google',
-        rememberMe: userData.rememberMe
-      });
-      setStatusMsg({
-        type: 'ok',
-        text: `Welcome back, ${userData.name}! Signed in via Google.`
-      });
-    }
+    // Both register and signin with Google establish registered status
+    const profile = storeActions.loginUser({
+      name: userData.name,
+      email: userData.email,
+      avatar: userData.avatar,
+      provider: 'google',
+      rememberMe: userData.rememberMe
+    });
+    setStatusMsg({
+      type: 'ok',
+      text: `✓ Connected with Google! Welcome ${profile.name}.`
+    });
     setTimeout(() => {
       onClose();
-    }, 900);
+    }, 600);
   };
 
   const handleAppleSuccess = (userData: { name: string; email: string; avatar: string; rememberMe: boolean }) => {
@@ -214,12 +202,25 @@ export const AuthModal: React.FC<AuthModalProps> = ({
             className="btn btn--soft w-full flex items-center justify-center gap-3 py-2.5 font-semibold text-sm"
             onClick={() => {
               tactile.click('click');
-              setIsGooglePopupOpen(true);
+              setIsLoading(true);
+              googleAuthService.openOfficialGoogleOAuthPopup({
+                onSuccess: (userData) => {
+                  setIsLoading(false);
+                  handleGoogleSuccess({
+                    ...userData,
+                    rememberMe
+                  });
+                },
+                onError: (err) => {
+                  setIsLoading(false);
+                  setIsGooglePopupOpen(true);
+                }
+              });
             }}
             disabled={isLoading}
           >
             <Icon name="google" size="md" />
-            <span>{mode === 'register' ? 'Sign up with Google' : 'Continue with Google'}</span>
+            <span>{isLoading ? 'Connecting to Google...' : (mode === 'register' ? 'Sign up with Google' : 'Continue with Google')}</span>
           </button>
 
           <button

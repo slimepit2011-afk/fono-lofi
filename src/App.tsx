@@ -10,6 +10,7 @@ import { AuthModal } from './components/AuthModal';
 import { FonoLogo } from './components/FonoLogo';
 import { Icon } from './ui/icons';
 import { tactile } from './services/tactileFeedback';
+import { googleAuthService } from './services/googleAuth';
 
 // Pages
 import { Home } from './pages/Home';
@@ -43,6 +44,9 @@ export const App: React.FC = () => {
   const getInitialRoute = () => {
     if (typeof window !== 'undefined' && window.location.hash) {
       const hash = window.location.hash.replace(/^#\/?/, '');
+      if (hash.includes('access_token') || hash.includes('id_token')) {
+        return 'profile';
+      }
       if (hash) return hash;
     }
     return 'home';
@@ -56,6 +60,60 @@ export const App: React.FC = () => {
       window.location.hash = `#${newRoute}`;
     }
   };
+
+  // Global Google OAuth Handlers (Popup opener & direct redirect)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    // 1. If running inside Google OAuth popup window
+    if (window.opener && window.location.hash) {
+      const hash = window.location.hash;
+      if (hash.includes('id_token=') || hash.includes('access_token=')) {
+        try {
+          window.opener.postMessage({ type: 'FONO_GOOGLE_AUTH_CALLBACK', hash }, window.location.origin);
+          window.close();
+          return;
+        } catch (e) {
+          console.warn('Failed to communicate with opener window', e);
+        }
+      }
+    }
+
+    // 2. If running in top-level window after redirect
+    if (window.location.hash && (window.location.hash.includes('id_token=') || window.location.hash.includes('access_token='))) {
+      const user = googleAuthService.parseHashToken(window.location.hash);
+      if (user && user.email) {
+        storeActions.loginUser({
+          name: user.name,
+          email: user.email,
+          avatar: user.avatar,
+          provider: 'google',
+          rememberMe: true
+        });
+        window.history.replaceState(null, '', window.location.pathname);
+        setRoute('profile');
+      }
+    }
+
+    // 3. Listen for popup response
+    const handleMsg = (e: MessageEvent) => {
+      if (e.data?.type === 'FONO_GOOGLE_AUTH_CALLBACK' && e.data?.hash) {
+        const user = googleAuthService.parseHashToken(e.data.hash);
+        if (user && user.email) {
+          storeActions.loginUser({
+            name: user.name,
+            email: user.email,
+            avatar: user.avatar,
+            provider: 'google',
+            rememberMe: true
+          });
+          setRoute('profile');
+        }
+      }
+    };
+    window.addEventListener('message', handleMsg);
+    return () => window.removeEventListener('message', handleMsg);
+  }, []);
 
   useEffect(() => {
     const handleHashChange = () => {
