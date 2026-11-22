@@ -65,7 +65,6 @@ export const App: React.FC = () => {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const isPopup = window.opener !== null || window.name === 'GoogleSignIn' || (window.innerWidth <= 600 && window.innerHeight <= 700);
     const hash = window.location.hash;
 
     // Handle token return from Google OAuth
@@ -80,7 +79,7 @@ export const App: React.FC = () => {
           rememberMe: true
         });
 
-        // 1. Broadcast to opener or peer windows
+        // 1. Broadcast to opener and peer windows
         googleAuthService.broadcastLogin(user);
 
         // 2. PostMessage to opener if available
@@ -92,15 +91,7 @@ export const App: React.FC = () => {
           }
         }
 
-        // 3. If running inside an OAuth popup window, close automatically
-        if (isPopup) {
-          setTimeout(() => {
-            try { window.close(); } catch {}
-          }, 400);
-          return;
-        }
-
-        // 4. In top-level full page, replace history and show profile
+        // 3. Clean URL hash and seamlessly transition to profile page (never close window on user)
         window.history.replaceState(null, '', window.location.pathname);
         setRoute('profile');
       }

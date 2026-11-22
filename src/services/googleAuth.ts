@@ -340,7 +340,6 @@ class GoogleAuthService {
           if (hash && (hash.includes('id_token=') || hash.includes('access_token='))) {
             const user = this.parseHashToken(hash);
             clearInterval(checkTimer);
-            try { popup.close(); } catch {}
             if (user && user.email) {
               this.broadcastLogin(user);
               this.dispatchSuccess(user);
