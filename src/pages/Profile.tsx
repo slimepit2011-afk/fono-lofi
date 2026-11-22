@@ -37,6 +37,7 @@ export const Profile: React.FC<ProfileProps> = ({ onNavigate, onOpenAuth }) => {
 
   const isRegistered = !!profile.isRegistered;
   const isVip = isRegistered && (store.plan === 'plus' || store.plan === 'duo');
+  const isFounder = !!profile.redeemedCodes?.includes('FOUNDER1129');
 
   // Stats calculation
   const totalSecondsListened = store.history ? store.history.reduce((acc, item) => acc + (item.s || 0), 0) : 0;
@@ -164,15 +165,17 @@ export const Profile: React.FC<ProfileProps> = ({ onNavigate, onOpenAuth }) => {
                 <span className="profile-hero__handle">@{profile.handle}</span>
                 <span
                   className={`profile-hero__badge ${
-                    isVip ? 'profile-hero__badge--vip' : 'profile-hero__badge--free'
+                    isVip || isFounder ? 'profile-hero__badge--vip' : 'profile-hero__badge--free'
                   }`}
                 >
-                  {isVip ? '👑 VIP MAX' : isRegistered ? 'FREE MEMBER' : 'FREE GUEST'}
+                  {isFounder ? '👑 FOUNDER 1129' : isVip ? (store.plan === 'duo' ? '👑 DUO MIX' : '👑 VIP MAX') : isRegistered ? 'FREE MEMBER' : 'FREE GUEST'}
                 </span>
               </div>
 
               <p className="profile-hero__bio">
-                {isRegistered
+                {isFounder
+                  ? '👑 FONO lofi Founder Pass 1129 · Full acoustic room privileges unlocked.'
+                  : isRegistered
                   ? profile.bio || 'Cozy acoustic listener in the FONO room.'
                   : 'You are listening as a temporary guest. Sign in to save your custom uploads, liked songs, and playlists.'}
               </p>

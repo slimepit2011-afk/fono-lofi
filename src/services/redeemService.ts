@@ -20,47 +20,81 @@ const REDEEM_CATALOG: Record<string, {
   skin?: 'obsidian' | 'latte' | 'matcha' | 'neon';
   hifi?: boolean;
 }> = {
-  'VIPMAX': {
-    title: 'VIP Max Lifetime Pass',
-    message: 'Congratulations! You have redeemed full Lifetime VIP Max membership with zero ads and studio perks.',
-    perks: ['VIP Max Status', 'Zero Advertisements', 'FLAC 320kbps Audio', 'Unlimited AI DJ'],
+  // 1. Founder Functions Pass (Special Founder 1129 Edition)
+  'FOUNDER1129': {
+    title: '👑 FONO Founder 1129 Master Pass',
+    message: 'Founder Pass 1129 verified! Lifetime VIP Max, all bespoke turntable finishes, Hi-Fi 320kbps pipeline, and complete founder privileges unlocked.',
+    perks: [
+      '👑 Founder Edition Status',
+      'VIP Max Lifetime Access',
+      'All Turntable Finishes (Obsidian, Latte, Matcha, Neon)',
+      'Hi-Fi Lossless 320kbps Audio Pipeline',
+      'Full Ambient Soundscape Mixer (Rain, Campfire, Cafe)',
+      'Unlimited AI DJ Recommendation Sessions',
+      'Private Upload Audio Vault Unlocked',
+      'Zero Advertisements'
+    ],
+    plan: 'plus',
+    skin: 'obsidian',
+    hifi: true
+  },
+
+  // 2. VIP Max Tier (Two 15-digit alphanumeric random codes)
+  'XH7CCSRX92GQS6M': {
+    title: 'VIP Max Lifetime Pass (Tier 1)',
+    message: 'VIP Max Pass verified! Full studio audio suite, bespoke skins, and ad-free listening unlocked.',
+    perks: [
+      'VIP Max Status',
+      'Zero Advertisements',
+      'Lossless 320kbps Studio Audio',
+      'Custom Vinyl Finishes',
+      'Ambient Soundscape Mixer',
+      'Unlimited AI DJ'
+    ],
     plan: 'plus',
     hifi: true
   },
-  'VIP2026': {
-    title: 'VIP Max 2026 Pass',
-    message: 'Welcome to VIP Max 2026! Full audio suite and turntable studio unlocked.',
-    perks: ['VIP Max Status', 'Ambient Soundscape Mixer', 'All Vinyl Skins'],
+  '3PNETUBDMJRV8ZZ': {
+    title: 'VIP Max Lifetime Pass (Tier 1)',
+    message: 'VIP Max Pass verified! Full studio audio suite, bespoke skins, and ad-free listening unlocked.',
+    perks: [
+      'VIP Max Status',
+      'Zero Advertisements',
+      'Lossless 320kbps Studio Audio',
+      'Custom Vinyl Finishes',
+      'Ambient Soundscape Mixer',
+      'Unlimited AI DJ'
+    ],
     plan: 'plus',
     hifi: true
   },
-  'LOFI2026': {
-    title: 'Lo-Fi Chillhop Founder Pack',
-    message: 'Founder code accepted! Warm Latte vinyl skin and studio audio unlocked.',
-    perks: ['Warm Latte Turntable Skin', 'Ambient Soundscape Mixer', 'FLAC Master'],
-    plan: 'plus',
-    skin: 'latte',
+
+  // 3. Duo Mix Tier (Two 15-digit alphanumeric random codes)
+  'GWZQSL55ALZBR6Q': {
+    title: 'Duo Mix Membership Pass (Tier 2)',
+    message: 'Duo Mix Pass verified! Two-seat access, shared Duo blend playlists, and complete studio features unlocked.',
+    perks: [
+      'Duo Mix 2-Account Status',
+      'Shared Duo Blend Playlist',
+      'Zero Advertisements',
+      'Lossless 320kbps Studio Audio',
+      'Full Soundscape Mixer & Vinyl Finishes'
+    ],
+    plan: 'duo',
     hifi: true
   },
-  'STUDIO': {
-    title: 'Studio Hi-Fi Audiophile Pass',
-    message: 'Studio warmth filter and lossless 320kbps pipeline unlocked.',
-    perks: ['Studio Hi-Fi Lossless Warmth', 'Lowpass Analog Harmonics'],
-    hifi: true,
-    plan: 'plus'
-  },
-  'NEONDUSK': {
-    title: 'Tokyo Dusk Neon Vinyl Skin',
-    message: 'Exclusive neon dusk turntable disc styling unlocked!',
-    perks: ['Tokyo Dusk Vinyl Finish', 'Night Club Ambient Tone'],
-    skin: 'neon',
-    plan: 'plus'
-  },
-  'COZYRAIN': {
-    title: 'Cozy Rain Soundscape Pack',
-    message: 'Procedural Rain, Fireplace Crackle, and Tokyo Cafe ambience unlocked!',
-    perks: ['Full Ambient Soundscape Mixer', 'Procedural Rain Generator'],
-    plan: 'plus'
+  '4RTBLUBGBACXKH2': {
+    title: 'Duo Mix Membership Pass (Tier 2)',
+    message: 'Duo Mix Pass verified! Two-seat access, shared Duo blend playlists, and complete studio features unlocked.',
+    perks: [
+      'Duo Mix 2-Account Status',
+      'Shared Duo Blend Playlist',
+      'Zero Advertisements',
+      'Lossless 320kbps Studio Audio',
+      'Full Soundscape Mixer & Vinyl Finishes'
+    ],
+    plan: 'duo',
+    hifi: true
   }
 };
 
@@ -76,7 +110,7 @@ class RedeemCodeService {
         success: false,
         code,
         title: 'Empty Code',
-        message: 'Please enter a valid gift or promo code.',
+        message: 'Please enter a valid gift or voucher code.',
         perksUnlocked: []
       };
     }
@@ -91,7 +125,7 @@ class RedeemCodeService {
       };
     }
 
-    // Check catalog
+    // Check catalog for authentic authorized codes
     const perkData = REDEEM_CATALOG[code];
     if (perkData) {
       return {
@@ -103,19 +137,6 @@ class RedeemCodeService {
         plan: perkData.plan,
         skin: perkData.skin,
         hifi: perkData.hifi
-      };
-    }
-
-    // Allow VIP prefix codes
-    if (code.startsWith('VIP') || code.startsWith('PRO') || code.startsWith('LOFI')) {
-      return {
-        success: true,
-        code,
-        title: 'Special VIP Access Pass',
-        message: `Code "${code}" verified! VIP perks and unlimited music streaming unlocked.`,
-        perksUnlocked: ['VIP Max Status', 'Zero Advertisements', 'FLAC Audio'],
-        plan: 'plus',
-        hifi: true
       };
     }
 
