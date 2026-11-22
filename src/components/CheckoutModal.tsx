@@ -28,9 +28,9 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const store = useStore();
   const savedMethods = store.paymentMethods || [];
 
-  // Active method tab: 'apple_pay' | 'google_pay' | 'stripe' | 'saved'
-  const [selectedTab, setSelectedTab] = useState<'apple_pay' | 'google_pay' | 'stripe' | 'saved'>(
-    savedMethods.length > 0 ? 'apple_pay' : 'stripe'
+  // Active method tab: 'alipay' | 'apple_pay' | 'google_pay' | 'stripe' | 'saved'
+  const [selectedTab, setSelectedTab] = useState<'alipay' | 'apple_pay' | 'google_pay' | 'stripe' | 'saved'>(
+    savedMethods.length > 0 ? 'alipay' : 'alipay'
   );
   const [selectedSavedId, setSelectedSavedId] = useState<string>(
     savedMethods.find(m => m.isDefault)?.id || savedMethods[0]?.id || ''
@@ -112,7 +112,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   const currentBrand = detectBrand(cardNumber);
 
   const executePayment = (
-    provider: 'apple_pay' | 'google_pay' | 'stripe',
+    provider: 'apple_pay' | 'google_pay' | 'alipay' | 'stripe',
     paymentData?: {
       brand?: CardBrand;
       last4?: string;
@@ -150,6 +150,16 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
           planName,
           amount,
           methodId: paymentData.methodId
+        });
+      } else if (provider === 'alipay') {
+        inv = storeActions.processPayment({
+          planId,
+          planName,
+          amount,
+          newMethod: {
+            type: 'alipay',
+            isDefault: false
+          }
         });
       } else if (provider === 'apple_pay') {
         inv = storeActions.processPayment({
@@ -412,10 +422,24 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
         {stage === 'idle' && (
           <>
             {/* Method Tab Picker */}
-            <div className="flex gap-2 mb-4">
+            <div className="flex gap-1.5 mb-4 overflow-x-auto pb-1">
               <button
                 type="button"
-                className={`btn btn--sm flex-1 flex items-center justify-center gap-1.5 ${
+                className={`btn btn--sm flex-1 flex items-center justify-center gap-1.5 whitespace-nowrap ${
+                  selectedTab === 'alipay' ? 'btn--primary' : 'btn--soft'
+                }`}
+                onClick={() => {
+                  tactile.click('tab');
+                  setSelectedTab('alipay');
+                }}
+              >
+                <Icon name="alipay" size="sm" />
+                <span>AlipayHK</span>
+              </button>
+
+              <button
+                type="button"
+                className={`btn btn--sm flex-1 flex items-center justify-center gap-1.5 whitespace-nowrap ${
                   selectedTab === 'apple_pay' ? 'btn--primary' : 'btn--soft'
                 }`}
                 onClick={() => {
@@ -429,7 +453,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
               <button
                 type="button"
-                className={`btn btn--sm flex-1 flex items-center justify-center gap-1.5 ${
+                className={`btn btn--sm flex-1 flex items-center justify-center gap-1.5 whitespace-nowrap ${
                   selectedTab === 'google_pay' ? 'btn--primary' : 'btn--soft'
                 }`}
                 onClick={() => {
@@ -443,7 +467,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
 
               <button
                 type="button"
-                className={`btn btn--sm flex-1 flex items-center justify-center gap-1.5 ${
+                className={`btn btn--sm flex-1 flex items-center justify-center gap-1.5 whitespace-nowrap ${
                   selectedTab === 'stripe' ? 'btn--primary' : 'btn--soft'
                 }`}
                 onClick={() => {
@@ -458,7 +482,7 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
               {savedMethods.length > 0 && (
                 <button
                   type="button"
-                  className={`btn btn--sm flex-1 flex items-center justify-center gap-1 ${
+                  className={`btn btn--sm flex-1 flex items-center justify-center gap-1 whitespace-nowrap ${
                     selectedTab === 'saved' ? 'btn--primary' : 'btn--soft'
                   }`}
                   onClick={() => {
@@ -475,6 +499,106 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
             {errorMsg && (
               <div className="p-3 mb-4 rounded-xl bg-red-50 text-red-700 text-xs border border-red-200">
                 ⚠️ {errorMsg}
+              </div>
+            )}
+
+            {/* TAB: ALIPAYHK */}
+            {selectedTab === 'alipay' && (
+              <div className="space-y-4">
+                <div
+                  className="p-4 rounded-xl text-xs space-y-3"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(22, 119, 255, 0.08) 0%, rgba(22, 119, 255, 0.02) 100%)',
+                    border: '1px solid rgba(22, 119, 255, 0.25)'
+                  }}
+                >
+                  <div className="flex items-center justify-between pb-2 border-b border-line">
+                    <div className="flex items-center gap-2">
+                      <Icon name="alipay" size="sm" />
+                      <span className="font-bold text-sm" style={{ color: '#1677FF' }}>AlipayHK 支付寶香港</span>
+                    </div>
+                    <span className="badge badge--pill bg-blue-100 text-blue-800 text-2xs">即時掃碼 · 免信用卡</span>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-center gap-4 py-1">
+                    {/* Simulated High-Res Alipay QR Code */}
+                    <div
+                      className="p-3 bg-white rounded-xl shadow-sm border border-line flex flex-col items-center justify-center relative"
+                      style={{ width: '130px', height: '130px', flexShrink: 0 }}
+                    >
+                      <svg viewBox="0 0 100 100" width="96" height="96" className="w-full h-full">
+                        {/* Finder pattern top-left */}
+                        <rect x="5" y="5" width="28" height="28" fill="#1677FF" rx="4" />
+                        <rect x="10" y="10" width="18" height="18" fill="#ffffff" rx="2" />
+                        <rect x="14" y="14" width="10" height="10" fill="#1677FF" rx="1" />
+                        {/* Finder pattern top-right */}
+                        <rect x="67" y="5" width="28" height="28" fill="#1677FF" rx="4" />
+                        <rect x="72" y="10" width="18" height="18" fill="#ffffff" rx="2" />
+                        <rect x="76" y="14" width="10" height="10" fill="#1677FF" rx="1" />
+                        {/* Finder pattern bottom-left */}
+                        <rect x="5" y="67" width="28" height="28" fill="#1677FF" rx="4" />
+                        <rect x="10" y="72" width="18" height="18" fill="#ffffff" rx="2" />
+                        <rect x="14" y="76" width="10" height="10" fill="#1677FF" rx="1" />
+                        {/* Matrix data dots */}
+                        <rect x="38" y="8" width="6" height="6" fill="#1677FF" rx="1" />
+                        <rect x="48" y="12" width="6" height="6" fill="#1677FF" rx="1" />
+                        <rect x="38" y="24" width="6" height="6" fill="#1677FF" rx="1" />
+                        <rect x="52" y="24" width="6" height="6" fill="#1677FF" rx="1" />
+                        <rect x="10" y="42" width="6" height="6" fill="#1677FF" rx="1" />
+                        <rect x="22" y="48" width="6" height="6" fill="#1677FF" rx="1" />
+                        <rect x="42" y="42" width="16" height="16" fill="#1677FF" rx="3" />
+                        <rect x="68" y="42" width="6" height="6" fill="#1677FF" rx="1" />
+                        <rect x="80" y="48" width="6" height="6" fill="#1677FF" rx="1" />
+                        <rect x="38" y="68" width="6" height="6" fill="#1677FF" rx="1" />
+                        <rect x="50" y="74" width="6" height="6" fill="#1677FF" rx="1" />
+                        <rect x="42" y="84" width="6" height="6" fill="#1677FF" rx="1" />
+                        <rect x="68" y="68" width="6" height="6" fill="#1677FF" rx="1" />
+                        <rect x="80" y="78" width="6" height="6" fill="#1677FF" rx="1" />
+                        <rect x="74" y="86" width="6" height="6" fill="#1677FF" rx="1" />
+                        {/* Center mini badge */}
+                        <circle cx="50" cy="50" r="6" fill="#ffffff" />
+                        <circle cx="50" cy="50" r="4" fill="#1677FF" />
+                      </svg>
+                    </div>
+
+                    <div className="space-y-1.5 flex-1 text-left">
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="muted-ink">應付金額 (HKD)</span>
+                        <b className="text-base font-bold" style={{ color: '#1677FF' }}>HK$48.00</b>
+                      </div>
+                      <div className="flex justify-between text-2xs">
+                        <span className="muted-ink">原始定價</span>
+                        <span>{amount} USD (免手續費)</span>
+                      </div>
+                      <div className="flex justify-between text-2xs">
+                        <span className="muted-ink">付款方式</span>
+                        <span>AlipayHK 錢包餘額 / 銀行戶口</span>
+                      </div>
+                      <p className="text-2xs text-muted-ink mt-2 pt-2 border-t border-line">
+                        打開 <strong>AlipayHK App</strong> 點擊「掃一掃」掃描 QR Code，或點擊下方按鈕以手機直接授權支付。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className="btn w-full flex items-center justify-center gap-2 py-3 shadow-md"
+                  style={{
+                    backgroundColor: '#1677FF',
+                    color: '#ffffff',
+                    borderRadius: 'var(--r-md)',
+                    fontWeight: 600,
+                    fontSize: '15px'
+                  }}
+                  onClick={() => executePayment('alipay')}
+                >
+                  <Icon name="alipay" size="md" />
+                  <span>以 AlipayHK 確認支付 (HK$48.00)</span>
+                </button>
+                <p className="text-center text-2xs muted-ink m-0">
+                  由 Stripe Alipay 國際安全網關清算 · 支援香港本地銀行扣款與零手續費轉帳
+                </p>
               </div>
             )}
 

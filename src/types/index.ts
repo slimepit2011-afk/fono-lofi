@@ -137,7 +137,7 @@ export interface UserProfile {
   redeemedCodes?: string[];
 }
 
-export type PaymentProvider = 'stripe' | 'apple_pay' | 'google_pay';
+export type PaymentProvider = 'stripe' | 'apple_pay' | 'google_pay' | 'alipay';
 export type CardBrand = 'visa' | 'mastercard' | 'amex' | 'discover' | 'generic';
 
 export interface PaymentMethod {

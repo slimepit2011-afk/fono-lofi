@@ -1081,12 +1081,14 @@ export const storeActions = {
       const added = storeActions.addPaymentMethod(newMethod);
       if (added.type === 'apple_pay') label = 'Apple Pay (Touch ID)';
       else if (added.type === 'google_pay') label = `Google Pay (${added.walletEmail || '1-Click'})`;
+      else if (added.type === 'alipay') label = 'AlipayHK (香港支付寶)';
       else label = `${(added.brand || 'card').toUpperCase()} ending in ${added.last4 || '4242'}`;
     } else if (methodId) {
       const pm = currentData.paymentMethods.find(p => p.id === methodId);
       if (pm) {
         if (pm.type === 'apple_pay') label = 'Apple Pay (Touch ID)';
         else if (pm.type === 'google_pay') label = `Google Pay (${pm.walletEmail || '1-Click'})`;
+        else if (pm.type === 'alipay') label = 'AlipayHK (香港支付寶)';
         else label = `${(pm.brand || 'card').toUpperCase()} ending in ${pm.last4 || '4242'}`;
       }
     }
