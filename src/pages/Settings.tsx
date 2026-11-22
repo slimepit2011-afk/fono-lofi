@@ -6,6 +6,7 @@ import { tactile } from '../services/tactileFeedback';
 import { RedeemCodeSection } from '../components/RedeemCodeSection';
 import { BillingSection } from '../components/BillingSection';
 import { googleAuthService } from '../services/googleAuth';
+import { appleAuthService } from '../services/appleAuth';
 import { paymentGatewayService } from '../services/paymentGateway';
 
 export interface SettingsProps {
@@ -37,8 +38,9 @@ export const Settings: React.FC<SettingsProps> = ({ onOpenAuth, onNavigate }) =>
   const [backupMsg, setBackupMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Google & Stripe Developer Credentials
+  // Google, Apple & Stripe Developer Credentials
   const [googleClientIdInput, setGoogleClientIdInput] = useState(googleAuthService.getClientId());
+  const [appleServicesIdInput, setAppleServicesIdInput] = useState(appleAuthService.getServicesId());
   const [stripeLinkInput, setStripeLinkInput] = useState(paymentGatewayService.getPaymentLink());
   const [stripePkInput, setStripePkInput] = useState(paymentGatewayService.getPublishableKey());
   const [devConfigSavedMsg, setDevConfigSavedMsg] = useState<string | null>(null);
@@ -47,9 +49,10 @@ export const Settings: React.FC<SettingsProps> = ({ onOpenAuth, onNavigate }) =>
     e.preventDefault();
     tactile.click('snap');
     googleAuthService.setClientId(googleClientIdInput.trim());
+    appleAuthService.setServicesId(appleServicesIdInput.trim());
     paymentGatewayService.setPaymentLink(stripeLinkInput.trim());
     paymentGatewayService.setPublishableKey(stripePkInput.trim());
-    setDevConfigSavedMsg('✓ Google OAuth and Stripe credentials saved successfully!');
+    setDevConfigSavedMsg('✓ Google OAuth, Apple ID, and Stripe credentials saved successfully!');
     setTimeout(() => setDevConfigSavedMsg(null), 3500);
   };
 
@@ -726,7 +729,7 @@ export const Settings: React.FC<SettingsProps> = ({ onOpenAuth, onNavigate }) =>
                   onChange={(e) => setGoogleClientIdInput(e.target.value)}
                 />
                 <div className="flex justify-between items-center pt-1 text-2xs muted-ink">
-                  <span>Registered for origin <code>http://localhost:3000</code></span>
+                  <span>Registered for origin <code>https://fono-lofi.vercel.app</code></span>
                   <a
                     href="https://console.cloud.google.com/apis/credentials"
                     target="_blank"
@@ -734,6 +737,36 @@ export const Settings: React.FC<SettingsProps> = ({ onOpenAuth, onNavigate }) =>
                     className="text-accent underline font-semibold"
                   >
                     Google Cloud Console &rarr;
+                  </a>
+                </div>
+              </div>
+
+              {/* Apple ID OAuth Section */}
+              <div className="p-3 rounded-xl bg-well border border-line space-y-2">
+                <div className="flex justify-between items-center">
+                  <b className="flex items-center gap-1.5 text-ink">
+                    <Icon name="apple" size="xs" /> Sign in with Apple (Services ID)
+                  </b>
+                  <span className={`badge badge--pill text-2xs ${appleServicesIdInput ? 'bg-green-100 text-green-800' : 'bg-line muted-ink'}`}>
+                    {appleServicesIdInput ? '✓ Configured' : 'Needs Services ID'}
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  className="input input--sm w-full font-mono text-xs"
+                  placeholder="e.g. com.fonolofi.web.auth"
+                  value={appleServicesIdInput}
+                  onChange={(e) => setAppleServicesIdInput(e.target.value)}
+                />
+                <div className="flex justify-between items-center pt-1 text-2xs muted-ink">
+                  <span>Authorized for origin <code>https://fono-lofi.vercel.app</code></span>
+                  <a
+                    href="https://developer.apple.com/account/resources/identifiers"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-accent underline font-semibold"
+                  >
+                    Apple Developer Portal &rarr;
                   </a>
                 </div>
               </div>
