@@ -45,6 +45,19 @@ export const Settings: React.FC<SettingsProps> = ({ onOpenAuth, onNavigate }) =>
   const [stripePkInput, setStripePkInput] = useState(paymentGatewayService.getPublishableKey());
   const [devConfigSavedMsg, setDevConfigSavedMsg] = useState<string | null>(null);
 
+  // Developer Gateways visibility (hidden by default for public users)
+  const [showDevGateways, setShowDevGateways] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const params = new URLSearchParams(window.location.search);
+    return (
+      params.get('dev') === '1' ||
+      params.get('admin') === '1' ||
+      window.location.hash.includes('dev') ||
+      localStorage.getItem('fono:show_dev_gateways') === 'true'
+    );
+  });
+  const [devClicks, setDevClicks] = useState(0);
+
   const handleSaveDevGateways = (e: React.FormEvent) => {
     e.preventDefault();
     tactile.click('snap');
@@ -677,169 +690,171 @@ export const Settings: React.FC<SettingsProps> = ({ onOpenAuth, onNavigate }) =>
           {/* Redeem Gift / Promo Code (User Request) */}
           <RedeemCodeSection className="mb-6" />
 
-          {/* Legitimate Developer Gateways: Google OAuth & Stripe Live (User Request) */}
-          <section className="card card--padded mb-6" style={{ border: '1px solid var(--line)' }}>
-            <div className="flex justify-between items-center mb-3">
-              <div className="flex items-center gap-2">
-                <div
-                  style={{
-                    width: '32px',
-                    height: '32px',
-                    borderRadius: '8px',
-                    backgroundColor: '#e0e7ff',
-                    color: '#4338ca',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    fontWeight: 700
-                  }}
-                >
-                  ⚡
-                </div>
-                <div>
-                  <h2 className="title title--sm m-0">Developer Gateways & Credentials</h2>
-                  <small className="muted-ink">Official Google OAuth 2.0 & Stripe Live Processing</small>
-                </div>
-              </div>
-              <span className="badge badge--pill bg-purple-100 text-purple-800 text-2xs font-bold">
-                Production Config
-              </span>
-            </div>
-
-            <p className="text-xs muted-ink mb-4 leading-relaxed">
-              Connect your official Google Cloud Client ID for <code>accounts.google.com</code> logins, and your Stripe Payment Link for <code>buy.stripe.com</code> card, Apple Pay, and Google Pay processing.
-            </p>
-
-            <form onSubmit={handleSaveDevGateways} className="space-y-4 text-xs">
-              {/* Google OAuth Section */}
-              <div className="p-3 rounded-xl bg-well border border-line space-y-2">
-                <div className="flex justify-between items-center">
-                  <b className="flex items-center gap-1.5 text-ink">
-                    <Icon name="google" size="xs" /> Google OAuth 2.0 Client ID
-                  </b>
-                  <span className={`badge badge--pill text-2xs ${googleClientIdInput ? 'bg-green-100 text-green-800' : 'bg-line muted-ink'}`}>
-                    {googleClientIdInput ? '✓ Configured' : 'Needs Client ID'}
-                  </span>
-                </div>
-                <input
-                  type="text"
-                  className="input input--sm w-full font-mono text-xs"
-                  placeholder="e.g. 123456789-abcdef.apps.googleusercontent.com"
-                  value={googleClientIdInput}
-                  onChange={(e) => setGoogleClientIdInput(e.target.value)}
-                />
-                <div className="flex justify-between items-center pt-1 text-2xs muted-ink">
-                  <span>Registered for origin <code>https://fono-lofi.vercel.app</code></span>
-                  <a
-                    href="https://console.cloud.google.com/apis/credentials"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-accent underline font-semibold"
+          {/* Legitimate Developer Gateways: Google OAuth & Stripe Live (Hidden for public users; unlocked via ?dev=1 or 5x version click) */}
+          {showDevGateways && (
+            <section className="card card--padded mb-6" style={{ border: '1px solid var(--line)' }}>
+              <div className="flex justify-between items-center mb-3">
+                <div className="flex items-center gap-2">
+                  <div
+                    style={{
+                      width: '32px',
+                      height: '32px',
+                      borderRadius: '8px',
+                      backgroundColor: '#e0e7ff',
+                      color: '#4338ca',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontWeight: 700
+                    }}
                   >
-                    Google Cloud Console &rarr;
-                  </a>
+                    ⚡
+                  </div>
+                  <div>
+                    <h2 className="title title--sm m-0">Developer Gateways & Credentials</h2>
+                    <small className="muted-ink">Official Google OAuth 2.0 & Stripe Live Processing</small>
+                  </div>
                 </div>
+                <span className="badge badge--pill bg-purple-100 text-purple-800 text-2xs font-bold">
+                  Production Config
+                </span>
               </div>
 
-              {/* Apple ID OAuth Section */}
-              <div className="p-3 rounded-xl bg-well border border-line space-y-2">
-                <div className="flex justify-between items-center">
-                  <b className="flex items-center gap-1.5 text-ink">
-                    <Icon name="apple" size="xs" /> Sign in with Apple (Services ID)
-                  </b>
-                  <span className={`badge badge--pill text-2xs ${appleServicesIdInput ? 'bg-green-100 text-green-800' : 'bg-line muted-ink'}`}>
-                    {appleServicesIdInput ? '✓ Configured' : 'Needs Services ID'}
-                  </span>
+              <p className="text-xs muted-ink mb-4 leading-relaxed">
+                Connect your official Google Cloud Client ID for <code>accounts.google.com</code> logins, and your Stripe Payment Link for <code>buy.stripe.com</code> card, Apple Pay, and Google Pay processing.
+              </p>
+
+              <form onSubmit={handleSaveDevGateways} className="space-y-4 text-xs">
+                {/* Google OAuth Section */}
+                <div className="p-3 rounded-xl bg-well border border-line space-y-2">
+                  <div className="flex justify-between items-center">
+                    <b className="flex items-center gap-1.5 text-ink">
+                      <Icon name="google" size="xs" /> Google OAuth 2.0 Client ID
+                    </b>
+                    <span className={`badge badge--pill text-2xs ${googleClientIdInput ? 'bg-green-100 text-green-800' : 'bg-line muted-ink'}`}>
+                      {googleClientIdInput ? '✓ Configured' : 'Needs Client ID'}
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    className="input input--sm w-full font-mono text-xs"
+                    placeholder="e.g. 123456789-abcdef.apps.googleusercontent.com"
+                    value={googleClientIdInput}
+                    onChange={(e) => setGoogleClientIdInput(e.target.value)}
+                  />
+                  <div className="flex justify-between items-center pt-1 text-2xs muted-ink">
+                    <span>Registered for origin <code>https://fono-lofi.vercel.app</code></span>
+                    <a
+                      href="https://console.cloud.google.com/apis/credentials"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-accent underline font-semibold"
+                    >
+                      Google Cloud Console &rarr;
+                    </a>
+                  </div>
                 </div>
-                <input
-                  type="text"
-                  className="input input--sm w-full font-mono text-xs"
-                  placeholder="e.g. com.fonolofi.web.auth"
-                  value={appleServicesIdInput}
-                  onChange={(e) => setAppleServicesIdInput(e.target.value)}
-                />
-                <div className="flex justify-between items-center pt-1 text-2xs muted-ink">
-                  <span>Authorized for origin <code>https://fono-lofi.vercel.app</code></span>
-                  <a
-                    href="https://developer.apple.com/account/resources/identifiers"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-accent underline font-semibold"
+
+                {/* Apple ID OAuth Section */}
+                <div className="p-3 rounded-xl bg-well border border-line space-y-2">
+                  <div className="flex justify-between items-center">
+                    <b className="flex items-center gap-1.5 text-ink">
+                      <Icon name="apple" size="xs" /> Sign in with Apple (Services ID)
+                    </b>
+                    <span className={`badge badge--pill text-2xs ${appleServicesIdInput ? 'bg-green-100 text-green-800' : 'bg-line muted-ink'}`}>
+                      {appleServicesIdInput ? '✓ Configured' : 'Needs Services ID'}
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    className="input input--sm w-full font-mono text-xs"
+                    placeholder="e.g. com.fonolofi.web.auth"
+                    value={appleServicesIdInput}
+                    onChange={(e) => setAppleServicesIdInput(e.target.value)}
+                  />
+                  <div className="flex justify-between items-center pt-1 text-2xs muted-ink">
+                    <span>Authorized for origin <code>https://fono-lofi.vercel.app</code></span>
+                    <a
+                      href="https://developer.apple.com/account/resources/identifiers"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-accent underline font-semibold"
+                    >
+                      Apple Developer Portal &rarr;
+                    </a>
+                  </div>
+                </div>
+
+                {/* Stripe Payment Link Section */}
+                <div className="p-3 rounded-xl bg-well border border-line space-y-2">
+                  <div className="flex justify-between items-center">
+                    <b className="flex items-center gap-1.5 text-ink">
+                      <Icon name="creditCard" size="xs" /> Stripe Payment Link URL
+                    </b>
+                    <span className={`badge badge--pill text-2xs ${stripeLinkInput ? 'bg-green-100 text-green-800' : 'bg-line muted-ink'}`}>
+                      {stripeLinkInput ? '✓ Active Link' : 'Needs Link'}
+                    </span>
+                  </div>
+                  <input
+                    type="url"
+                    className="input input--sm w-full font-mono text-xs"
+                    placeholder="https://buy.stripe.com/... or test link https://buy.stripe.com/test_..."
+                    value={stripeLinkInput}
+                    onChange={(e) => setStripeLinkInput(e.target.value)}
+                  />
+                  <div className="flex justify-between items-center pt-1 text-2xs muted-ink">
+                    <span>Enables Credit Cards, Apple Pay, & Google Pay automatically</span>
+                    <a
+                      href="https://dashboard.stripe.com/payment-links/create"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-accent underline font-semibold"
+                    >
+                      Stripe Payment Links &rarr;
+                    </a>
+                  </div>
+                </div>
+
+                {/* Stripe Publishable Key */}
+                <div className="p-3 rounded-xl bg-well border border-line space-y-2">
+                  <div className="flex justify-between items-center">
+                    <b className="flex items-center gap-1.5 text-ink">
+                      <Icon name="lock" size="xs" /> Stripe Publishable Key (Optional)
+                    </b>
+                    <span className={`badge badge--pill text-2xs ${stripePkInput ? 'bg-green-100 text-green-800' : 'bg-line muted-ink'}`}>
+                      {stripePkInput ? '✓ Key Saved' : 'Optional'}
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    className="input input--sm w-full font-mono text-xs"
+                    placeholder="pk_live_... or pk_test_..."
+                    value={stripePkInput}
+                    onChange={(e) => setStripePkInput(e.target.value)}
+                  />
+                </div>
+
+                {devConfigSavedMsg && (
+                  <div className="p-2.5 rounded-lg bg-green-50 text-green-800 font-semibold text-xs border border-green-200">
+                    {devConfigSavedMsg}
+                  </div>
+                )}
+
+                <div className="flex gap-2 pt-2">
+                  <button type="submit" className="btn btn--primary btn--sm font-bold flex-1">
+                    Save Credentials
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn--soft btn--sm"
+                    onClick={() => paymentGatewayService.openRealStripeCheckout()}
                   >
-                    Apple Developer Portal &rarr;
-                  </a>
+                    Test Stripe Portal &rarr;
+                  </button>
                 </div>
-              </div>
-
-              {/* Stripe Payment Link Section */}
-              <div className="p-3 rounded-xl bg-well border border-line space-y-2">
-                <div className="flex justify-between items-center">
-                  <b className="flex items-center gap-1.5 text-ink">
-                    <Icon name="creditCard" size="xs" /> Stripe Payment Link URL
-                  </b>
-                  <span className={`badge badge--pill text-2xs ${stripeLinkInput ? 'bg-green-100 text-green-800' : 'bg-line muted-ink'}`}>
-                    {stripeLinkInput ? '✓ Active Link' : 'Needs Link'}
-                  </span>
-                </div>
-                <input
-                  type="url"
-                  className="input input--sm w-full font-mono text-xs"
-                  placeholder="https://buy.stripe.com/... or test link https://buy.stripe.com/test_..."
-                  value={stripeLinkInput}
-                  onChange={(e) => setStripeLinkInput(e.target.value)}
-                />
-                <div className="flex justify-between items-center pt-1 text-2xs muted-ink">
-                  <span>Enables Credit Cards, Apple Pay, & Google Pay automatically</span>
-                  <a
-                    href="https://dashboard.stripe.com/payment-links/create"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-accent underline font-semibold"
-                  >
-                    Stripe Payment Links &rarr;
-                  </a>
-                </div>
-              </div>
-
-              {/* Stripe Publishable Key */}
-              <div className="p-3 rounded-xl bg-well border border-line space-y-2">
-                <div className="flex justify-between items-center">
-                  <b className="flex items-center gap-1.5 text-ink">
-                    <Icon name="lock" size="xs" /> Stripe Publishable Key (Optional)
-                  </b>
-                  <span className={`badge badge--pill text-2xs ${stripePkInput ? 'bg-green-100 text-green-800' : 'bg-line muted-ink'}`}>
-                    {stripePkInput ? '✓ Key Saved' : 'Optional'}
-                  </span>
-                </div>
-                <input
-                  type="text"
-                  className="input input--sm w-full font-mono text-xs"
-                  placeholder="pk_live_... or pk_test_..."
-                  value={stripePkInput}
-                  onChange={(e) => setStripePkInput(e.target.value)}
-                />
-              </div>
-
-              {devConfigSavedMsg && (
-                <div className="p-2.5 rounded-lg bg-green-50 text-green-800 font-semibold text-xs border border-green-200">
-                  {devConfigSavedMsg}
-                </div>
-              )}
-
-              <div className="flex gap-2 pt-2">
-                <button type="submit" className="btn btn--primary btn--sm font-bold flex-1">
-                  Save Credentials
-                </button>
-                <button
-                  type="button"
-                  className="btn btn--soft btn--sm"
-                  onClick={() => paymentGatewayService.openRealStripeCheckout()}
-                >
-                  Test Stripe Portal &rarr;
-                </button>
-              </div>
-            </form>
-          </section>
+              </form>
+            </section>
+          )}
 
           {/* Profile & Reset */}
           <section className="card card--padded">
@@ -939,14 +954,33 @@ export const Settings: React.FC<SettingsProps> = ({ onOpenAuth, onNavigate }) =>
                 Reset to Defaults
               </button>
 
-              <div className="pt-3 border-t border-line text-center text-xs muted-ink flex items-center justify-center gap-3">
-                <a href="/privacy" target="_blank" rel="noopener noreferrer" className="hover:underline">
-                  Privacy Policy ↗
-                </a>
-                <span>·</span>
-                <a href="/terms" target="_blank" rel="noopener noreferrer" className="hover:underline">
-                  Terms of Service ↗
-                </a>
+              <div className="pt-3 border-t border-line text-center text-xs muted-ink flex flex-col items-center justify-center gap-2">
+                <div className="flex items-center justify-center gap-3">
+                  <a href="/privacy" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                    Privacy Policy ↗
+                  </a>
+                  <span>·</span>
+                  <a href="/terms" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                    Terms of Service ↗
+                  </a>
+                </div>
+                <span
+                  className="cursor-pointer select-none text-2xs opacity-40 hover:opacity-80 transition-opacity"
+                  onClick={() => {
+                    const next = devClicks + 1;
+                    setDevClicks(next);
+                    if (next >= 5) {
+                      const nextState = !showDevGateways;
+                      setShowDevGateways(nextState);
+                      localStorage.setItem('fono:show_dev_gateways', String(nextState));
+                      setDevClicks(0);
+                      tactile.click('snap');
+                    }
+                  }}
+                  title="FONO lofi Web Release"
+                >
+                  FONO lofi v1.0.0 {showDevGateways ? '· [Dev Config Active]' : ''}
+                </span>
               </div>
             </div>
           </section>
