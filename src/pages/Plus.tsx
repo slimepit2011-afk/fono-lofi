@@ -6,12 +6,6 @@ import { ambientAudio } from '../services/ambientAudio';
 import { aiDJ, QUICK_PROMPTS, AIMixResult } from '../services/aiRecommendation';
 import { tactile } from '../services/tactileFeedback';
 import { RedeemCodeSection } from '../components/RedeemCodeSection';
-import { BillingSection } from '../components/BillingSection';
-import { CheckoutModal } from '../components/CheckoutModal';
-import { ApplePaySheet } from '../components/ApplePaySheet';
-import { GooglePayModal } from '../components/GooglePayModal';
-import { StripeCheckoutModal } from '../components/StripeCheckoutModal';
-import { isPaymentMethodsVisible } from '../services/paymentGateway';
 
 export interface PlusProps {
   onOpenAuth?: (mode?: 'signin' | 'register') => void;
@@ -34,15 +28,6 @@ export const Plus: React.FC<PlusProps> = ({ onOpenAuth }) => {
   // Offline cache status
   const [isCaching, setIsCaching] = useState(false);
   const [cachedStatus, setCachedStatus] = useState<string | null>(null);
-
-  // Checkout modal
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [directGateway, setDirectGateway] = useState<'apple_pay' | 'google_pay' | 'stripe' | null>(null);
-  const [checkoutPlan, setCheckoutPlan] = useState<{ id: 'plus' | 'duo'; name: string; amount: string }>({
-    id: 'plus',
-    name: 'VIP Max Lifetime Pass',
-    amount: '$5.99'
-  });
 
   const handleUpdateAmbient = (type: 'rain' | 'crackle' | 'cafe', val: number) => {
     const updated = { ...ambientLevels, [type]: val };
@@ -166,11 +151,11 @@ export const Plus: React.FC<PlusProps> = ({ onOpenAuth }) => {
                 className="btn btn--primary font-bold shadow-md"
                 onClick={() => {
                   tactile.click('snap');
-                  setCheckoutPlan({ id: 'plus', name: 'VIP Max Monthly Pass', amount: '$4.99' });
-                  setIsCheckoutOpen(true);
+                  const el = document.querySelector('.redeem-card');
+                  el?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
-                👑 Upgrade to VIP Max ($4.99)
+                👑 Redeem VIP Voucher
               </button>
             </div>
           </div>
@@ -550,9 +535,6 @@ export const Plus: React.FC<PlusProps> = ({ onOpenAuth }) => {
         )}
       </section>
 
-      {/* Saved Payment Methods & Billing (User Request) */}
-      <BillingSection className="mb-6" />
-
       {/* Redeem Code Section (Item: Place for Redeeming Codes) */}
       <RedeemCodeSection className="mb-6" />
 
@@ -601,63 +583,19 @@ export const Plus: React.FC<PlusProps> = ({ onOpenAuth }) => {
                 className="btn btn--xs btn--primary w-full font-bold"
                 onClick={() => {
                   tactile.click('click');
-                  setCheckoutPlan({
-                    id: 'plus',
-                    name: 'VIP Max Lifetime Pass',
-                    amount: '$5.99'
-                  });
-                  setIsCheckoutOpen(true);
+                  const el = document.querySelector('.redeem-card');
+                  el?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
-                ✓ Active · Manage Plan ($5.99)
+                ✓ Active Plan · Lifetime Pass
               </button>
-              {isPaymentMethodsVisible() && (
-                <div className="flex gap-1">
-                  <button
-                    type="button"
-                    className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
-                    onClick={() => {
-                      tactile.click('click');
-                      setCheckoutPlan({ id: 'plus', name: 'VIP Max Lifetime Pass', amount: '$5.99' });
-                      setDirectGateway('apple_pay');
-                    }}
-                    title="Pay with Apple Pay"
-                  >
-                    <Icon name="apple" size="xs" /> Pay
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
-                    onClick={() => {
-                      tactile.click('click');
-                      setCheckoutPlan({ id: 'plus', name: 'VIP Max Lifetime Pass', amount: '$5.99' });
-                      setDirectGateway('google_pay');
-                    }}
-                    title="Pay with Google Pay"
-                  >
-                    <Icon name="google" size="xs" /> GPay
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
-                    onClick={() => {
-                      tactile.click('click');
-                      setCheckoutPlan({ id: 'plus', name: 'VIP Max Lifetime Pass', amount: '$5.99' });
-                      setDirectGateway('stripe');
-                    }}
-                    title="Pay with Stripe"
-                  >
-                    <Icon name="creditCard" size="xs" /> Stripe
-                  </button>
-                </div>
-              )}
             </div>
           </div>
 
           <div className="p-4 rounded-xl border border-line flex flex-col justify-between">
             <div>
               <b className="block">Duo Mix</b>
-              <span className="text-xs muted-ink block mb-2">$8.99 / month</span>
+              <span className="text-xs muted-ink block mb-2">Voucher Access Only</span>
               <ul className="text-xs space-y-1 mb-4">
                 <li>Everything in Plus</li>
                 <li>2 Distinct Accounts</li>
@@ -670,103 +608,16 @@ export const Plus: React.FC<PlusProps> = ({ onOpenAuth }) => {
                 className="btn btn--xs btn--soft w-full font-bold"
                 onClick={() => {
                   tactile.click('click');
-                  setCheckoutPlan({
-                    id: 'duo',
-                    name: 'Duo Mix (2 Accounts)',
-                    amount: '$8.99'
-                  });
-                  setIsCheckoutOpen(true);
+                  const el = document.querySelector('.redeem-card');
+                  el?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
-                Upgrade to Duo ($8.99)
+                Redeem Duo Voucher
               </button>
-              {isPaymentMethodsVisible() && (
-                <div className="flex gap-1">
-                  <button
-                    type="button"
-                    className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
-                    onClick={() => {
-                      tactile.click('click');
-                      setCheckoutPlan({ id: 'duo', name: 'Duo Mix (2 Accounts)', amount: '$8.99' });
-                      setDirectGateway('apple_pay');
-                    }}
-                    title="Upgrade with Apple Pay"
-                  >
-                    <Icon name="apple" size="xs" /> Pay
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
-                    onClick={() => {
-                      tactile.click('click');
-                      setCheckoutPlan({ id: 'duo', name: 'Duo Mix (2 Accounts)', amount: '$8.99' });
-                      setDirectGateway('google_pay');
-                    }}
-                    title="Upgrade with Google Pay"
-                  >
-                    <Icon name="google" size="xs" /> GPay
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
-                    onClick={() => {
-                      tactile.click('click');
-                      setCheckoutPlan({ id: 'duo', name: 'Duo Mix (2 Accounts)', amount: '$8.99' });
-                      setDirectGateway('stripe');
-                    }}
-                    title="Upgrade with Stripe"
-                  >
-                    <Icon name="creditCard" size="xs" /> Stripe
-                  </button>
-                </div>
-              )}
             </div>
           </div>
         </div>
       </div>
-
-      {/* Interactive Checkout Modal */}
-      <CheckoutModal
-        isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
-        planId={checkoutPlan.id}
-        planName={checkoutPlan.name}
-        amount={checkoutPlan.amount}
-      />
-
-      {/* Direct Real Gateway Modals */}
-      <ApplePaySheet
-        isOpen={directGateway === 'apple_pay'}
-        onClose={() => setDirectGateway(null)}
-        planId={checkoutPlan.id}
-        planName={checkoutPlan.name}
-        amount={checkoutPlan.amount}
-        onSuccess={() => {
-          alert(`Successfully subscribed to ${checkoutPlan.name} via Apple Pay!`);
-        }}
-      />
-
-      <GooglePayModal
-        isOpen={directGateway === 'google_pay'}
-        onClose={() => setDirectGateway(null)}
-        planId={checkoutPlan.id}
-        planName={checkoutPlan.name}
-        amount={checkoutPlan.amount}
-        onSuccess={() => {
-          alert(`Successfully subscribed to ${checkoutPlan.name} via Google Pay!`);
-        }}
-      />
-
-      <StripeCheckoutModal
-        isOpen={directGateway === 'stripe'}
-        onClose={() => setDirectGateway(null)}
-        planId={checkoutPlan.id}
-        planName={checkoutPlan.name}
-        amount={checkoutPlan.amount}
-        onSuccess={() => {
-          alert(`Successfully subscribed to ${checkoutPlan.name} via Stripe Checkout!`);
-        }}
-      />
     </div>
   );
 };

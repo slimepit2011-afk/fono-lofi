@@ -5,7 +5,6 @@ import { GuestAvatar } from '../components/GuestAvatar';
 import { tactile } from '../services/tactileFeedback';
 import { formatDuration } from '../ui/format';
 import { AudioUploader } from '../components/AudioUploader';
-import { CheckoutModal } from '../components/CheckoutModal';
 import { googleAuthService } from '../services/googleAuth';
 
 export interface ProfileProps {
@@ -57,9 +56,6 @@ export const Profile: React.FC<ProfileProps> = ({ onNavigate, onOpenAuth }) => {
 
   // Logout confirmation inline modal
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
-
-  // VIP Checkout modal
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
 
   // Uploader visibility
   const [showUploader, setShowUploader] = useState(false);
@@ -391,10 +387,10 @@ export const Profile: React.FC<ProfileProps> = ({ onNavigate, onOpenAuth }) => {
               className="btn btn--primary btn--sm font-bold shadow-sm"
               onClick={() => {
                 tactile.click('snap');
-                setIsCheckoutOpen(true);
+                onNavigate?.('plus');
               }}
             >
-              👑 Get VIP Max ($4.99/mo)
+              👑 Redeem VIP Voucher
             </button>
             <button
               type="button"
@@ -695,14 +691,7 @@ export const Profile: React.FC<ProfileProps> = ({ onNavigate, onOpenAuth }) => {
         </div>
       )}
 
-      {/* VIP Checkout Modal */}
-      <CheckoutModal
-        isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
-        planId="plus"
-        planName="VIP Max Monthly Pass"
-        amount="$4.99"
-      />
+      {/* Modal containers */}
     </div>
   );
 };

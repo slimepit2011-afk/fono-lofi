@@ -4,7 +4,6 @@ import { Icon } from '../ui/icons';
 import { spotifyService } from '../services/spotify';
 import { tactile } from '../services/tactileFeedback';
 import { RedeemCodeSection } from '../components/RedeemCodeSection';
-import { BillingSection } from '../components/BillingSection';
 import { googleAuthService } from '../services/googleAuth';
 import { appleAuthService } from '../services/appleAuth';
 import { paymentGatewayService } from '../services/paymentGateway';
@@ -683,9 +682,6 @@ export const Settings: React.FC<SettingsProps> = ({ onOpenAuth, onNavigate }) =>
               </div>
             </div>
           </section>
-
-          {/* Payment Methods & Billing (User Request) */}
-          <BillingSection className="mb-6" />
 
           {/* Redeem Gift / Promo Code (User Request) */}
           <RedeemCodeSection className="mb-6" />
