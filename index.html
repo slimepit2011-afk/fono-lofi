@@ -3,18 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>FONO lofi — Ambient Focus & Study Music Player</title>
-  <meta name="description" content="FONO lofi is a free ambient focus and study web player providing curated lo-fi instrumental beats, study timers, soundscapes, and an optional private library vault for uploaded audio tracks." />
+  <title>FONO lofi — Ambient Focus &amp; Study Music Player</title>
+  <meta name="description" content="FONO lofi is a free ambient focus and study web player providing curated lo-fi instrumental beats, study timers, soundscapes, and an optional private library vault for uploaded audio tracks. Public open access with no login required." />
   <meta name="theme-color" content="#fcecdc" />
   <meta name="application-name" content="FONO lofi" />
   <meta name="apple-mobile-web-app-title" content="FONO lofi" />
   <!-- Google Search Console Ownership Verification -->
   <meta name="google-site-verification" content="oQ49-yHDm8zqKqIqiWxz9ULKgd2OQ3VHvkLv7qsZz-I" />
   
+  <!-- JSON-LD Structured Data for Search Engine & Google Verification Crawlers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "FONO lofi",
+    "alternateName": "FONO lofi Music Player",
+    "url": "https://fono-lofi.vercel.app/",
+    "applicationCategory": "MultimediaApplication",
+    "operatingSystem": "All Web Browsers",
+    "description": "FONO lofi is a free ambient focus and study web player providing curated lo-fi instrumental beats, study timers, soundscapes, and an optional private library vault for uploaded audio tracks. Completely ungated open access without login.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
   <!-- FONO Bespoke Icons -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
   <link rel="alternate icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
   <link rel="preload" href="/fonts/urbanist/urbanist-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -49,7 +69,7 @@
   <div id="lullo-yt-iframe" style="position:fixed;bottom:10px;right:10px;width:320px;height:180px;opacity:0.001;pointer-events:none;z-index:-9999;"></div>
   
   <div id="root">
-    <!-- Immediate cozy pre-mount skeleton (prevents blank screen) -->
+    <!-- Immediate cozy pre-mount skeleton (prevents blank screen for JS users) -->
     <div id="fono-preloader" style="position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background-color:#fcecdc;font-family:'Urbanist',system-ui,sans-serif;z-index:99999;transition:opacity 0.3s ease;">
       <style>
         @keyframes fonoSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -79,7 +99,64 @@
         }, 3500);
       </script>
     </div>
+
+    <!-- Static Semantic Document for Google OAuth Verification Crawlers & Headless Browsers -->
+    <div id="fono-static-crawler-content" style="max-width: 820px; margin: 40px auto; padding: 24px; font-family: system-ui, -apple-system, sans-serif; color: #3d2b1f;">
+      <header style="text-align: center; margin-bottom: 28px;">
+        <img src="/fono-logo-badge.png" alt="FONO lofi Logo" style="width: 72px; height: 72px; border-radius: 16px; margin-bottom: 12px;" />
+        <h1 style="font-size: 32px; font-weight: 800; margin: 0 0 6px; color: #3d2b1f;">FONO lofi</h1>
+        <p style="font-size: 16px; color: #75604f; margin: 0 0 14px; font-weight: 600;">
+          Ambient Focus &amp; Study Music Player · 專注與放鬆音樂播放器
+        </p>
+        <div style="display: inline-block; background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 700;">
+          ✓ Open Public Access · No Login Required (完全公開 · 無需登入即可使用)
+        </div>
+      </header>
+
+      <section style="background: #fdf5ec; border: 1px solid rgba(61,43,31,0.12); border-radius: 16px; padding: 24px; margin-bottom: 20px;">
+        <h2 style="font-size: 19px; font-weight: 700; margin-top: 0; color: #3d2b1f;">
+          Application Purpose (應用程式用途)
+        </h2>
+        <p style="font-size: 14px; line-height: 1.7; margin: 0 0 12px;">
+          <strong>FONO lofi</strong> (<a href="https://fono-lofi.vercel.app/" style="color: #e8613c;">https://fono-lofi.vercel.app/</a>) is a free web-based ambient music and study companion designed to enhance concentration, relaxation, and deep work. All users can freely browse and stream curated instrumental lo-fi beats, ambient audio soundscapes (rain, cafe background, warm vinyl crackle), and use Pomodoro focus timers directly in their browser without registering or logging in.
+        </p>
+        <p style="font-size: 14px; line-height: 1.7; margin: 0;">
+          <strong>Optional Google OAuth:</strong> Signing in via Google OAuth is 100% voluntary. It is solely used to associate a user's identity (email and display name) so they can sync personalized playlists and uploaded tracks to their private vault across different browsers and devices.
+        </p>
+      </section>
+
+      <section style="background: #fdf5ec; border: 1px solid rgba(61,43,31,0.12); border-radius: 16px; padding: 24px; margin-bottom: 20px;">
+        <h2 style="font-size: 19px; font-weight: 700; margin-top: 0; color: #3d2b1f;">
+          Google APIs Terms of Service &amp; Strict Anti-AI NCII Compliance
+        </h2>
+        <p style="font-size: 14px; line-height: 1.7; margin: 0 0 12px;">
+          FONO lofi strictly complies with the <a href="https://developers.google.com/terms" target="_blank" rel="noopener noreferrer" style="color: #e8613c;">Google APIs Terms of Service</a> and the Google API Services User Data Policy.
+        </p>
+        <ul style="font-size: 14px; line-height: 1.7; padding-left: 20px; margin: 0;">
+          <li><strong>No Generative Image / AI NCII:</strong> FONO lofi does not generate, synthesize, host, or distribute AI-generated Non-Consensual Intimate Imagery (NCII), deepfake pornography, or synthetic depictions of persons. FONO lofi provides zero facial modification or generative image services.</li>
+          <li><strong>Audio Only:</strong> Any algorithmic playlist tools operate strictly on musical metadata (genre, tempo, mood tags) for ambient audio playback.</li>
+          <li><strong>No Data Brokering:</strong> Google user credentials (openid, email, profile) are never sold, rented, or transferred to third parties or advertising brokers.</li>
+        </ul>
+      </section>
+
+      <footer style="text-align: center; border-top: 1px solid rgba(61,43,31,0.12); padding-top: 20px; font-size: 13px; color: #75604f;">
+        <p style="margin: 0 0 10px;">
+          <a href="/privacy" style="color: #e8613c; font-weight: 700; text-decoration: underline; margin-right: 14px;">Privacy Policy (隱私權政策)</a> · 
+          <a href="/terms" style="color: #e8613c; font-weight: 700; text-decoration: underline; margin-left: 14px;">Terms of Service (服務條款)</a>
+        </p>
+        <p style="margin: 0; font-size: 12px;">
+          Application Name: <strong>FONO lofi</strong> · Homepage: <a href="https://fono-lofi.vercel.app/" style="color: #e8613c;">https://fono-lofi.vercel.app/</a> · Contact: support@fono-lofi.vercel.app
+        </p>
+      </footer>
+    </div>
   </div>
+  <noscript>
+    <div style="max-width: 820px; margin: 40px auto; padding: 24px; font-family: system-ui, sans-serif; color: #3d2b1f;">
+      <h1>FONO lofi — Ambient Focus &amp; Study Music Player</h1>
+      <p>Public open access ambient music player. No login required to browse or play music.</p>
+      <p><a href="/privacy">Privacy Policy</a> | <a href="/terms">Terms of Service</a></p>
+    </div>
+  </noscript>
   <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>
