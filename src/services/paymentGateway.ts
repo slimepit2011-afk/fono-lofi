@@ -1,6 +1,18 @@
 // Legitimate Payment Gateway Integration Service
 // Coordinates Real Stripe, Apple Pay, and Google Pay processing.
 
+// Global Feature Flag: Set to false while merchant verifications (Stripe, Apple, Google, Alipay) are pending.
+// Set to true or use ?payments=1 to preview/re-enable.
+export const SHOW_PAYMENT_METHODS = false;
+
+export function isPaymentMethodsVisible(): boolean {
+  if (typeof window !== 'undefined') {
+    if (new URLSearchParams(window.location.search).get('payments') === '1') return true;
+    if (localStorage.getItem('fono:show_payment_methods') === 'true') return true;
+  }
+  return SHOW_PAYMENT_METHODS;
+}
+
 const STORAGE_KEY_STRIPE_PK = 'lullo:stripe_publishable_key';
 const STORAGE_KEY_STRIPE_LINK = 'lullo:stripe_payment_link';
 

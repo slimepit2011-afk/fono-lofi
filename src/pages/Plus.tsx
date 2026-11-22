@@ -11,6 +11,7 @@ import { CheckoutModal } from '../components/CheckoutModal';
 import { ApplePaySheet } from '../components/ApplePaySheet';
 import { GooglePayModal } from '../components/GooglePayModal';
 import { StripeCheckoutModal } from '../components/StripeCheckoutModal';
+import { isPaymentMethodsVisible } from '../services/paymentGateway';
 
 export interface PlusProps {
   onOpenAuth?: (mode?: 'signin' | 'register') => void;
@@ -610,44 +611,46 @@ export const Plus: React.FC<PlusProps> = ({ onOpenAuth }) => {
               >
                 ✓ Active · Manage Plan ($5.99)
               </button>
-              <div className="flex gap-1">
-                <button
-                  type="button"
-                  className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
-                  onClick={() => {
-                    tactile.click('click');
-                    setCheckoutPlan({ id: 'plus', name: 'VIP Max Lifetime Pass', amount: '$5.99' });
-                    setDirectGateway('apple_pay');
-                  }}
-                  title="Pay with Apple Pay"
-                >
-                  <Icon name="apple" size="xs" /> Pay
-                </button>
-                <button
-                  type="button"
-                  className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
-                  onClick={() => {
-                    tactile.click('click');
-                    setCheckoutPlan({ id: 'plus', name: 'VIP Max Lifetime Pass', amount: '$5.99' });
-                    setDirectGateway('google_pay');
-                  }}
-                  title="Pay with Google Pay"
-                >
-                  <Icon name="google" size="xs" /> GPay
-                </button>
-                <button
-                  type="button"
-                  className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
-                  onClick={() => {
-                    tactile.click('click');
-                    setCheckoutPlan({ id: 'plus', name: 'VIP Max Lifetime Pass', amount: '$5.99' });
-                    setDirectGateway('stripe');
-                  }}
-                  title="Pay with Stripe"
-                >
-                  <Icon name="creditCard" size="xs" /> Stripe
-                </button>
-              </div>
+              {isPaymentMethodsVisible() && (
+                <div className="flex gap-1">
+                  <button
+                    type="button"
+                    className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
+                    onClick={() => {
+                      tactile.click('click');
+                      setCheckoutPlan({ id: 'plus', name: 'VIP Max Lifetime Pass', amount: '$5.99' });
+                      setDirectGateway('apple_pay');
+                    }}
+                    title="Pay with Apple Pay"
+                  >
+                    <Icon name="apple" size="xs" /> Pay
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
+                    onClick={() => {
+                      tactile.click('click');
+                      setCheckoutPlan({ id: 'plus', name: 'VIP Max Lifetime Pass', amount: '$5.99' });
+                      setDirectGateway('google_pay');
+                    }}
+                    title="Pay with Google Pay"
+                  >
+                    <Icon name="google" size="xs" /> GPay
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
+                    onClick={() => {
+                      tactile.click('click');
+                      setCheckoutPlan({ id: 'plus', name: 'VIP Max Lifetime Pass', amount: '$5.99' });
+                      setDirectGateway('stripe');
+                    }}
+                    title="Pay with Stripe"
+                  >
+                    <Icon name="creditCard" size="xs" /> Stripe
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -677,44 +680,46 @@ export const Plus: React.FC<PlusProps> = ({ onOpenAuth }) => {
               >
                 Upgrade to Duo ($8.99)
               </button>
-              <div className="flex gap-1">
-                <button
-                  type="button"
-                  className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
-                  onClick={() => {
-                    tactile.click('click');
-                    setCheckoutPlan({ id: 'duo', name: 'Duo Mix (2 Accounts)', amount: '$8.99' });
-                    setDirectGateway('apple_pay');
-                  }}
-                  title="Upgrade with Apple Pay"
-                >
-                  <Icon name="apple" size="xs" /> Pay
-                </button>
-                <button
-                  type="button"
-                  className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
-                  onClick={() => {
-                    tactile.click('click');
-                    setCheckoutPlan({ id: 'duo', name: 'Duo Mix (2 Accounts)', amount: '$8.99' });
-                    setDirectGateway('google_pay');
-                  }}
-                  title="Upgrade with Google Pay"
-                >
-                  <Icon name="google" size="xs" /> GPay
-                </button>
-                <button
-                  type="button"
-                  className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
-                  onClick={() => {
-                    tactile.click('click');
-                    setCheckoutPlan({ id: 'duo', name: 'Duo Mix (2 Accounts)', amount: '$8.99' });
-                    setDirectGateway('stripe');
-                  }}
-                  title="Upgrade with Stripe"
-                >
-                  <Icon name="creditCard" size="xs" /> Stripe
-                </button>
-              </div>
+              {isPaymentMethodsVisible() && (
+                <div className="flex gap-1">
+                  <button
+                    type="button"
+                    className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
+                    onClick={() => {
+                      tactile.click('click');
+                      setCheckoutPlan({ id: 'duo', name: 'Duo Mix (2 Accounts)', amount: '$8.99' });
+                      setDirectGateway('apple_pay');
+                    }}
+                    title="Upgrade with Apple Pay"
+                  >
+                    <Icon name="apple" size="xs" /> Pay
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
+                    onClick={() => {
+                      tactile.click('click');
+                      setCheckoutPlan({ id: 'duo', name: 'Duo Mix (2 Accounts)', amount: '$8.99' });
+                      setDirectGateway('google_pay');
+                    }}
+                    title="Upgrade with Google Pay"
+                  >
+                    <Icon name="google" size="xs" /> GPay
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn--2xs btn--soft flex-1 flex items-center justify-center gap-0.5"
+                    onClick={() => {
+                      tactile.click('click');
+                      setCheckoutPlan({ id: 'duo', name: 'Duo Mix (2 Accounts)', amount: '$8.99' });
+                      setDirectGateway('stripe');
+                    }}
+                    title="Upgrade with Stripe"
+                  >
+                    <Icon name="creditCard" size="xs" /> Stripe
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>

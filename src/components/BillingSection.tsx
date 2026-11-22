@@ -7,6 +7,7 @@ import { ApplePaySheet } from './ApplePaySheet';
 import { GooglePayModal } from './GooglePayModal';
 import { StripeCheckoutModal } from './StripeCheckoutModal';
 import { BillingInvoice, PaymentMethod } from '../types';
+import { isPaymentMethodsVisible } from '../services/paymentGateway';
 
 export interface BillingSectionProps {
   className?: string;
@@ -14,6 +15,11 @@ export interface BillingSectionProps {
 }
 
 export const BillingSection: React.FC<BillingSectionProps> = ({ className = '' }) => {
+  // Feature flag: hidden while waiting for payment provider merchant verifications
+  if (!isPaymentMethodsVisible()) {
+    return null;
+  }
+
   const store = useStore();
   const paymentMethods = store.paymentMethods || [];
   const invoices = store.invoices || [];

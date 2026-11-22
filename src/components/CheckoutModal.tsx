@@ -6,7 +6,7 @@ import { CardBrand, PaymentMethod, BillingInvoice } from '../types';
 import { ApplePaySheet } from './ApplePaySheet';
 import { GooglePayModal } from './GooglePayModal';
 import { StripeCheckoutModal } from './StripeCheckoutModal';
-import { paymentGatewayService } from '../services/paymentGateway';
+import { paymentGatewayService, isPaymentMethodsVisible } from '../services/paymentGateway';
 
 export interface CheckoutModalProps {
   isOpen: boolean;
@@ -83,6 +83,70 @@ export const CheckoutModal: React.FC<CheckoutModalProps> = ({
   };
 
   if (!isOpen) return null;
+
+  if (!isPaymentMethodsVisible()) {
+    return (
+      <div className="finder-backdrop" onClick={onClose}>
+        <div
+          className="card modal checkout-modal"
+          role="dialog"
+          aria-modal="true"
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            maxWidth: '440px',
+            width: '100%',
+            padding: '32px 28px',
+            textAlign: 'center',
+            borderRadius: 'var(--r-lg)',
+            boxShadow: 'var(--shadow-lg)'
+          }}
+        >
+          <div
+            style={{
+              width: '52px',
+              height: '52px',
+              borderRadius: '16px',
+              backgroundColor: 'rgba(232, 97, 60, 0.12)',
+              color: 'var(--accent)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              margin: '0 auto 16px'
+            }}
+          >
+            <Icon name="creditCard" size="md" />
+          </div>
+
+          <h3 className="title title--sm mb-2" style={{ color: 'var(--ink)' }}>
+            Payment Gateways Under Verification
+          </h3>
+          <p className="text-xs muted-ink mb-4" style={{ lineHeight: 1.6 }}>
+            Direct online checkout is temporarily offline while merchant and gateway verifications are being finalized.
+          </p>
+
+          <div
+            className="p-3 rounded-xl mb-5 text-xs text-left"
+            style={{
+              backgroundColor: 'rgba(232, 97, 60, 0.08)',
+              border: '1px solid rgba(232, 97, 60, 0.2)',
+              color: 'var(--ink)'
+            }}
+          >
+            💡 <strong>Instant Unlock:</strong> You can unlock VIP features immediately by entering an invite or founder code in the <strong>Redeem Code</strong> section!
+          </div>
+
+          <button
+            type="button"
+            className="btn btn--primary w-full font-bold"
+            style={{ padding: '10px 16px', borderRadius: '12px' }}
+            onClick={onClose}
+          >
+            Understood
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   // Luhn and brand detector
   const detectBrand = (num: string): CardBrand => {
