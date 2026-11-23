@@ -61,6 +61,7 @@ export const Finder: React.FC<FinderProps> = ({ isOpen, onClose, onNavigate }) =
 
   const isYouTubeUrl = youtubeService.parseUrl(query) !== null;
   const isSpotifyUrl = spotifyService.parseUrl(query) !== null;
+  const spotifyParsed = spotifyService.parseUrl(query);
 
   const filteredTracks = store.tracks.filter(t => {
     const q = query.toLowerCase().trim();
@@ -99,20 +100,28 @@ export const Finder: React.FC<FinderProps> = ({ isOpen, onClose, onNavigate }) =
   const handleImportSpotify = async () => {
     if (!isSpotifyUrl) return;
     setImporting(true);
-    setImportStatus('Importing Spotify playlist & songs...');
+    setImportStatus(spotifyParsed?.type === 'track' ? 'Importing Spotify track...' : 'Importing Spotify playlist & songs...');
     try {
       const pl = await storeActions.importSpotifyPlaylistUrl(query);
       if (pl) {
-        setImportStatus(`Imported "${pl.name}" with ${pl.tracks.length} tracks!`);
-        setTimeout(() => {
-          onNavigate(`playlist:${pl.id}`);
-          onClose();
-        }, 800);
+        if (spotifyParsed?.type === 'track' && pl.tracks.length > 0) {
+          setImportStatus(`Added "${pl.name}"! Playing now...`);
+          setTimeout(() => {
+            storeActions.playTrack(pl.tracks[0]);
+            onClose();
+          }, 600);
+        } else {
+          setImportStatus(`Imported "${pl.name}" with ${pl.tracks.length} tracks!`);
+          setTimeout(() => {
+            onNavigate(`playlist:${pl.id}`);
+            onClose();
+          }, 800);
+        }
       } else {
-        setImportStatus('Could not extract Spotify playlist. Try another public playlist URL or connect in Settings.');
+        setImportStatus('Could not extract Spotify playlist. Please ensure the playlist is Public on Spotify or connect in Settings.');
       }
     } catch (err: any) {
-      setImportStatus('Failed to import Spotify playlist: ' + err.message);
+      setImportStatus(err.message || 'Failed to import Spotify playlist.');
     } finally {
       setImporting(false);
     }
@@ -221,8 +230,12 @@ export const Finder: React.FC<FinderProps> = ({ isOpen, onClose, onNavigate }) =
             <div className="finder__import-info">
               <Icon name="spotify" size="md" />
               <div>
-                <b>Import Spotify Playlist / Track</b>
-                <p>Import all tracks, artists, and audio previews directly into FONO lofi.</p>
+                <b>Import Spotify {spotifyParsed?.type === 'track' ? 'Track' : spotifyParsed?.type === 'album' ? 'Album' : 'Playlist'}</b>
+                <p>
+                  {spotifyParsed?.type === 'track'
+                    ? 'Import and play this Spotify track with vinyl animation.'
+                    : 'Import all tracks, artists, and audio previews directly into FONO lofi.'}
+                </p>
               </div>
             </div>
             <button
@@ -231,13 +244,22 @@ export const Finder: React.FC<FinderProps> = ({ isOpen, onClose, onNavigate }) =
               disabled={importing}
               onClick={handleImportSpotify}
             >
-              {importing ? 'Importing...' : 'Import Playlist'}
+              {importing ? 'Importing...' : spotifyParsed?.type === 'track' ? 'Play Track' : 'Import Playlist'}
             </button>
           </div>
         )}
 
         {importStatus && (
-          <div className="finder__status label label--ink">
+          <div
+            className={`finder__status label ${
+              importStatus.includes('Imported') || importStatus.includes('Added')
+                ? 'label--success'
+                : importStatus.includes('Private') || importStatus.includes('Could not') || importStatus.includes('Failed')
+                ? 'label--warning'
+                : 'label--ink'
+            }`}
+            style={{ whiteSpace: 'normal', lineHeight: '1.4', padding: '8px 12px' }}
+          >
             {importStatus}
           </div>
         )}

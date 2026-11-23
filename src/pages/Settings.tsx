@@ -123,13 +123,13 @@ export const Settings: React.FC<SettingsProps> = ({ onOpenAuth, onNavigate }) =>
       } else {
         setUrlImportMsg({
           type: 'err',
-          text: 'Could not extract playlist. Make sure it is a valid Spotify playlist link.'
+          text: 'Could not extract playlist. Please ensure the playlist is Public on Spotify or connect your Spotify credentials.'
         });
       }
     } catch (err: any) {
       setUrlImportMsg({
         type: 'err',
-        text: 'Import failed: ' + err.message
+        text: err.message || 'Import failed.'
       });
     } finally {
       setIsUrlImporting(false);

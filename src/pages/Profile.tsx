@@ -36,7 +36,7 @@ export const Profile: React.FC<ProfileProps> = ({ onNavigate, onOpenAuth }) => {
 
   const isRegistered = !!profile.isRegistered;
   const isVip = isRegistered && (store.plan === 'plus' || store.plan === 'duo');
-  const isFounder = !!profile.redeemedCodes?.includes('FOUNDER1129');
+  const isFounder = !!profile.redeemedCodes?.some(c => c.toUpperCase().includes('FOUNDER'));
 
   // Stats calculation
   const totalSecondsListened = store.history ? store.history.reduce((acc, item) => acc + (item.s || 0), 0) : 0;
